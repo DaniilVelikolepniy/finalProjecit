@@ -115,10 +115,9 @@
             </p>
         </div>
         <div class="secions column">
-            <img src="{{ asset('storage/'. 'hotels_images' . $data['poster_url']) }}" alt="Фото {{ $data['name'] }}">
+            <img src="{{ asset('storage/' . $data['poster_url']) }}" alt="Фото {{ $data['name'] }}">
         </div>
     </main>
-    <footer class="footer"></footer>
 </body>
 
 </html>

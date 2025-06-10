@@ -57,7 +57,14 @@ class HotelController extends Controller
     // сохранение изменений
     public function update(StoreHotelRequest $request, $id)
     {
+        $path = null;
+
+        if ($request->hasFile('poster_url')) {
+            $path = $request->file('poster_url')->store('hotel_images', 'public');
+        }
+
         $validatedData = $request->toArray();
+        $validatedData['poster_url'] = $path;
         Hotel::findOrFail($id)->update($validatedData);
         return redirect()->route('h.list');
     }

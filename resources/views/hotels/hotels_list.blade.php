@@ -253,6 +253,12 @@
             @endwhile
         </div>
     </main>
+    <script>
+    function closeMessageBlock() {
+        var messageBlock = document.getElementById('message-block');
+        messageBlock.style.display = 'none';
+    }
+</script>
 </body>
 
 </html>
