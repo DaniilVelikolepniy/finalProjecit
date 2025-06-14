@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRoomRequest;
 use App\Models\Room;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,7 @@ class RoomController extends Controller
      */
     public function create()
     {
-        //
+        return view('');
     }
 
     /**
@@ -42,24 +43,35 @@ class RoomController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Room $room)
+    public function edit($id)
     {
-        //
+        $roomData = Room::findOrFail($id)->toArray();
+        return view('', ['data' => $roomData]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Room $room)
+    public function update(StoreRoomRequest $request, $id)
     {
-        //
+        $path = null;
+
+        if ($request->hasFile('poster_url')) {
+            $path = $request->file('poster_url')->store('room_images', 'public');
+        }
+
+        $validatedData = $request->toArray();
+        $validatedData['poster_url'] = $path;
+        Room::findOrFail($id)->update($validatedData);
+        dd('В контроллере комнат в метод update, на строке 67, надо вставить название роута куда перенаправляем');
+        return redirect()->route('');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Room $room)
+    public function destroy($id)
     {
-        //
+        Room::destroy($id);
     }
 }
