@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Hotel extends Model
 {
+    use HasFactory;
+    
     protected $connection = 'mysql';
     protected $primaryKey = 'id';
     public $incrementing = true;
