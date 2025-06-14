@@ -5,27 +5,32 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Hotel extends Model
+class Booking extends Model
 {
+    use HasFactory;
+
     protected $connection = 'mysql';
     protected $primaryKey = 'id';
     public $incrementing = true;
     public $timestamps = true;
 
     protected $fillable = [
-        'name',
-        'description',
-        'poster_url',
-        'address'
+        'room_id',
+        'user_id',
+        'started_at',
+        'finished_at',
+        'days',
+        'price'
     ];
 
-    public function rooms()
+    public function room()
     {
-        return $this->hasMany(Room::class);
+        return $this->belongsTo(Room::class);
     }
 
-    public function facilities()
+    public function user()
     {
-        return $this->belongsToMany(Facility::class, 'facility_hotel');
+        return $this->belongsTo(User::class);
     }
 }
+

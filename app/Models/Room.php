@@ -29,13 +29,13 @@ class Room extends Model
         return $this->belongsTo(Hotel::class);
     }
 
-    // public function facilities()
-    // {
-    //     return $this->belongsToMany(Facility::class, 'facility_room');
-    // }
+    public function facilities()
+    {
+        return $this->belongsToMany(Facility::class, 'facility_room');
+    }
 
-    // public function bookings()
-    // {
-    //     return $this->hasMany(Booking::class);
-    // }
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }
