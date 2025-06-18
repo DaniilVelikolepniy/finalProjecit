@@ -4,13 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\RoomController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 // Route::get('/', function () {
-//     return view('layouts.app');
-// })->name('home');
+//     return view('welcome');
+// });
+
+Route::get('/', function () {
+    return view('layouts.app');
+})->name('home');
 
 
 Route::resource('/hotels', HotelController::class)->names([
