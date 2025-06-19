@@ -1,5 +1,6 @@
 <div class="bg-white rounded shadow-md flex card text-grey-darkest">
-    <img class="w-1/2 h-full rounded-l-sm" src="{{ $hotel->poster_url }}" alt="Hotel Image">
+    
+    <img class="w-1/2 h-full rounded-l-sm" src="{{ asset('storage/' . $hotel->poster_url) }}" alt="Фото отеля '{{ $hotel->name }}'">
     <div class="w-full flex flex-col justify-between p-4">
         <div>
             <a class="block text-grey-darkest mb-2 font-bold"

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Hotel;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreHotelRequest;
+use App\Models\Room;
 
 class HotelController extends Controller
 {
@@ -18,8 +19,9 @@ class HotelController extends Controller
     // показать конкретную запись
     public function show($id)
     {
-        $hotelData = Hotel::findOrFail($id)->toArray();
-        return view('hotels.hotel_show', ['data' => $hotelData]);
+        $hotelData = Hotel::findOrFail($id);
+        $roomsData = Room::all();
+        return view('hotels.show', ['hotel' => $hotelData, 'rooms' => $roomsData]);
     }
 
     // форма добавления записи

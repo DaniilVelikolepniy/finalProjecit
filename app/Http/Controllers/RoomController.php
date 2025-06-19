@@ -13,7 +13,8 @@ class RoomController extends Controller
      */
     public function index()
     {
-        //
+        $roomsData = Room::all();
+        return view('components.hotels.hotel-card', ['rooms' => $roomsData]);
     }
 
     /**
@@ -35,7 +36,7 @@ class RoomController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Room $room)
+    public function show($id)
     {
         //
     }
