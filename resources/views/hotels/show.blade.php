@@ -1,6 +1,6 @@
 @php
-    $startDate = request()->get('start_date', \Carbon\Carbon::now()->format('Y-m-d'));
-    $endDate = request()->get('end_date', \Carbon\Carbon::now()->addDay()->format('Y-m-d'));
+$startDate = request()->get('start_date', \Carbon\Carbon::now()->format('Y-m-d'));
+$endDate = request()->get('end_date', \Carbon\Carbon::now()->addDay()->format('Y-m-d'));
 @endphp
 
 <x-app-layout>
@@ -25,14 +25,14 @@
                     <div class="flex items-center mr-5">
                         <div class="relative">
                             <input name="start_date" min="{{ date('Y-m-d') }}" value="{{ $startDate }}"
-                                   placeholder="Дата заезда" type="date"
-                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5">
+                                placeholder="Дата заезда" type="date"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5">
                         </div>
                         <span class="mx-4 text-gray-500">по</span>
                         <div class="relative">
                             <input name="end_date" type="date" min="{{ date('Y-m-d') }}" value="{{ $endDate }}"
-                                   placeholder="Дата выезда"
-                                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5">
+                                placeholder="Дата выезда"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5">
                         </div>
                     </div>
                     <div>
@@ -41,13 +41,13 @@
                 </div>
             </form>
             @if($startDate && $endDate)
-                <div class="flex flex-col w-full lg:w-4/5">
-                    @foreach($rooms as $room)
-                        <x-rooms.room-list-item :room="$room" class="mb-4"/>
-                    @endforeach
-                </div>
+            <div class="flex flex-col w-full lg:w-4/5">
+                @foreach($rooms as $room)
+                <x-rooms.room-list-item :room="$room" class="mb-4" />
+                @endforeach
+            </div>
             @else
-                <div></div>
+            <div></div>
             @endif
         </div>
     </div>

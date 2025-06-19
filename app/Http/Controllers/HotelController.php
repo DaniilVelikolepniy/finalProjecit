@@ -12,7 +12,7 @@ class HotelController extends Controller
     public function index()
     {
         $allHotels = Hotel::all();
-        return view('hotels.hotels_list', ['data' => $allHotels]);
+        return view('hotels.index', ['hotels' => $allHotels]);
     }
 
     // показать конкретную запись

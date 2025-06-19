@@ -1,15 +1,17 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\RoomController;
+use App\Models\Booking;
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 
 Route::get('/', function () {
-    return view('layouts.app');
+    return view('index');
 })->name('home');
 
 
@@ -24,11 +26,21 @@ Route::resource('/hotels', HotelController::class)->names([
 ]);
 
 Route::resource('/rooms', RoomController::class)->names([
-    'index' => 'r.list',
+    'index' => 'r.index',
     'show' => 'r.show',
     'create' => 'r.create',
     'store' => 'r.store',
     'edit' => 'r.edit',
     'update' => 'r.update',
     'destroy' => 'r.destroy',
+]);
+
+Route::resource('/bookings', BookingController::class)->names([
+    'index' => 'b.index',
+    'show' => 'b.show',
+    'create' => 'b.create',
+    'store' => 'b.store',
+    'edit' => 'b.edit',
+    'update' => 'b.update',
+    'destroy' => 'b.destroy',
 ]);
