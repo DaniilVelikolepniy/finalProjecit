@@ -1,7 +1,16 @@
 @php
-$startDate = request()->get('start_date', \Carbon\Carbon::now()->format('Y-m-d'));
-$endDate = request()->get('end_date', \Carbon\Carbon::now()->addDay()->format('Y-m-d'));
+use Carbon\Carbon;
+
+$startDate = Carbon::parse(request()->get('start_date', Carbon::now()->format('Y-m-d')));
+$endDate = Carbon::parse(request()->get('end_date', Carbon::now()->addDay()->format('Y-m-d')));
+
+$count = $startDate->diffInDays($endDate);
+
+$startDateFormatted = $startDate->format('Y-m-d');
+$endDateFormatted = $endDate->format('Y-m-d');
 @endphp
+
+
 
 <x-layouts.app>
     <div class="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
@@ -23,16 +32,17 @@ $endDate = request()->get('end_date', \Carbon\Carbon::now()->addDay()->format('Y
             <div class="text-2xl text-center md:text-start font-bold">Забронировать комнату</div>
 
             <form method="get" action="{{ url()->current() }}">
+
                 <div class="flex my-6">
                     <div class="flex items-center mr-5">
                         <div class="relative">
-                            <input name="start_date" min="{{ date('Y-m-d') }}" value="{{ $startDate }}"
+                            <input name="start_date" min="{{ date('Y-m-d') }}" value="{{ $startDateFormatted }}"
                                 placeholder="Дата заезда" type="date"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5">
                         </div>
                         <span class="mx-4 text-gray-500">по</span>
                         <div class="relative">
-                            <input name="end_date" type="date" min="{{ date('Y-m-d') }}" value="{{ $endDate }}"
+                            <input name="end_date" type="date" min="{{ date('Y-m-d') }}" value="{{ $endDateFormatted }}"
                                 placeholder="Дата выезда"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5">
                         </div>
@@ -45,6 +55,12 @@ $endDate = request()->get('end_date', \Carbon\Carbon::now()->addDay()->format('Y
             @if($startDate && $endDate)
             <div class="flex flex-col w-full lg:w-4/5">
                 @foreach($rooms as $room)
+                <?php
+                    $room->total_price = $room->price * $count;
+                    $room->total_days = $count;
+                    $room->startDate = $startDateFormatted;
+                    $room->endDate= $endDateFormatted;
+                ?>
                 <x-rooms.room-list-item :room="$room" class="mb-4" />
                 @endforeach
             </div>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -11,7 +13,8 @@ class BookingController extends Controller
      */
     public function index()
     {
-        //
+        $allBookings = Booking::all();
+        return view('bookings.index', ['bookings' => $allBookings]);
     }
 
     /**
@@ -27,7 +30,11 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->toArray();
+        $data['user_id'] = 1;
+
+        Booking::create($data);
+        return redirect()->route('b.index');
     }
 
     /**
