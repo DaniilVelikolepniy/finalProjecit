@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BookingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HotelController;
@@ -12,8 +13,17 @@ use App\Models\Booking;
 
 Route::get('/', function () {
     return view('index');
-})->name('home');
+})
+->middleware('auth')
+->name('home');
 
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/authUser', [AuthController::class, 'login'])->name('auth');
+
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::resource('/hotels', HotelController::class)->names([
     'index' => 'h.list',

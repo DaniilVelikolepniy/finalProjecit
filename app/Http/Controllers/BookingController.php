@@ -31,7 +31,7 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         $data = $request->toArray();
-        $data['user_id'] = 1;
+        $data['user_id'] = $request->user_id;
 
         Booking::create($data);
         return redirect()->route('b.index');

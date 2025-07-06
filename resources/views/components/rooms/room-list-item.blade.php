@@ -28,6 +28,7 @@
             </div>
             <form class="ml-4" method="POST" action="{{ route('b.store') }}">
                 @csrf
+                <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                 <input type="hidden" name="started_at" value="{{ $room->startDate }}">
                 <input type="hidden" name="finished_at" value="{{ $room->endDate }}">
                 <input type="hidden" name="room_id" value="{{ $room->id }}">
