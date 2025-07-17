@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\RoomController;
 use App\Models\Booking;
+use App\Http\Controllers\RoleController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -24,6 +25,27 @@ Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::prefix('roles')
+    ->name('roles.')
+    ->middleware('role:admin')
+    ->group(function () {
+
+        Route::get('/', [RoleController::class, 'index'])->name('index');
+
+        Route::get('/create', [RoleController::class, 'create'])->name('create');
+
+        Route::post('/', [RoleController::class, 'store'])->name('store');
+
+        Route::get('/{role}/edit', [RoleController::class, 'edit'])->name('edit');
+
+        Route::put('/{role}', [RoleController::class, 'update'])->name('update');
+
+        Route::get('/{role}/users', [RoleController::class, 'users'])->name('users');
+
+        Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
+    });
+
 
 Route::resource('/hotels', HotelController::class)->names([
     'index' => 'h.list',
