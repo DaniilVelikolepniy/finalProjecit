@@ -21,8 +21,10 @@ $endDateFormatted = $endDate->format('Y-m-d');
             <div class="w-full md:w-2/3 px-4">
                 <div class="text-2xl font-bold">{{ $hotel->name }}</div>
                 <hr>
+                <a href="{{ route('h.edit', ['hotel' => $hotel->id]) }}"><b>Редактировать</b></a>
+                <hr>
                 <div class="flex items-center">
-                    {{ $hotel->address }}
+                    <b>Адрес: </b> {{ $hotel->address }}
                 </div>
                 <hr>
                 <div>{{ $hotel->description }}</div>

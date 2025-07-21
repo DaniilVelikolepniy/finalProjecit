@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRoomRequest;
+use App\Models\Hotel;
 use App\Models\Room;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,8 @@ class RoomController extends Controller
      */
     public function create()
     {
-        return view('');
+        $hotels = Hotel::all();
+        return view('hotels.add_room_form', ['hotels' => $hotels]);
     }
 
     /**
@@ -30,7 +32,33 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'price_per_night' => 'required|numeric|min:0',
+            'area' => 'nullable|numeric|min:0',
+            'room_class' => 'nullable|string|max:50',
+            'hotel_id' => 'required|exists:hotels,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('room_images', 'public');
+        }
+
+        Room::create([
+            'name' => $validated['name'],
+            'description' => $validated['description'] ?? null,
+            'poster_url' => $imagePath,
+            'floor_area' => $validated['area'] ?? null,
+            'type' => $validated['room_class'] ?? null,
+            'price' => $validated['price_per_night'],
+            'hotel_id' => $validated['hotel_id'],
+        ]);
+
+        return redirect()->route('h.list')->with('success', 'Комната успешно добавлена.');
     }
 
     /**

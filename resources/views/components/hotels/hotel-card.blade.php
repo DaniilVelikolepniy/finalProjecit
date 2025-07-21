@@ -5,7 +5,7 @@
             <a class="block text-grey-darkest mb-2 font-bold"
                href="{{ route('h.show', ['hotel' => $hotel]) }}">{{ $hotel->name }}</a>
             <div class="text-xs">
-                {{ $hotel->address }}
+                <b>Адрес: </b>{{ $hotel->address }}
             </div>
         </div>
         @if($hotel->rooms()->min('price'))

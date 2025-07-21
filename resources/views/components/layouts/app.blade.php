@@ -16,6 +16,75 @@
     <script src="{{ mix('/js/app.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/datepicker.min.js"></script>
 
+    <style>
+        .main {
+            margin: 0;
+            padding: 0 25px;
+            height: 90vh;
+            width: calc(100vw - 50px);
+            display: grid;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form {
+            background-color: #f8f8f8;
+            height: 65vh;
+            width: 35vw;
+            border-radius: 10px;
+            box-shadow: 0px 0px 40px 10px rgba(0, 0, 0, 0.5);
+            display: grid;
+            align-items: center;
+            justify-items: center;
+            justify-content: center;
+            align-content: stretch;
+        }
+
+        .form label {
+            display: block;
+            font-size: 20px;
+        }
+
+        .form .input {
+            margin-top: 10px;
+            padding: 7px;
+            width: 30vw;
+            height: fit-content;
+            border-radius: 7px;
+            border: solid 1px black;
+            font-size: 18px;
+        }
+
+        .form #description {
+            resize: none;
+            height: 10vh;
+        }
+
+        .form .buttons {
+            width: 31vw;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .form .button {
+            display: flex;
+            cursor: pointer;
+            margin: 0;
+            width: 12.5vw;
+            height: 3vh;
+            border-radius: 3px;
+            border: solid 1px black;
+            background-color: darkgray;
+            color: black;
+            font-size: 18px;
+            text-decoration: none;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
 </head>
 
 <body class="font-sans antialiased">
