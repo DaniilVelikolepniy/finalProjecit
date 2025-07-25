@@ -21,7 +21,27 @@ $endDateFormatted = $endDate->format('Y-m-d');
             <div class="w-full md:w-2/3 px-4">
                 <div class="text-2xl font-bold">{{ $hotel->name }}</div>
                 <hr>
-                <a href="{{ route('h.edit', ['hotel' => $hotel->id]) }}"><b>Редактировать</b></a>
+
+                <div class="flex gap-4 my-4">
+                    <!-- Кнопка редактирования -->
+                    <a href="{{ route('h.edit', ['hotel' => $hotel->id]) }}"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
+                        ✏️ Редактировать
+                    </a>
+
+                    <!-- Форма удаления -->
+                    <form method="POST" action="{{ route('h.destroy', $hotel->id) }}"
+                        onsubmit="return confirm('Вы уверены, что хотите удалить этот отель?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                            class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition">
+                            🗑️ Удалить
+                        </button>
+                    </form>
+                </div>
+
+
                 <hr>
                 <div class="flex items-center">
                     <b>Адрес: </b> {{ $hotel->address }}
@@ -58,10 +78,10 @@ $endDateFormatted = $endDate->format('Y-m-d');
             <div class="flex flex-col w-full lg:w-4/5">
                 @foreach($rooms as $room)
                 <?php
-                    $room->total_price = $room->price * $count;
-                    $room->total_days = $count;
-                    $room->startDate = $startDateFormatted;
-                    $room->endDate= $endDateFormatted;
+                $room->total_price = $room->price * $count;
+                $room->total_days = $count;
+                $room->startDate = $startDateFormatted;
+                $room->endDate = $endDateFormatted;
                 ?>
                 <x-rooms.room-list-item :room="$room" class="mb-4" />
                 @endforeach

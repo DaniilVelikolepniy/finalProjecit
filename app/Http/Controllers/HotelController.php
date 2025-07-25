@@ -89,7 +89,7 @@ class HotelController extends Controller
         $hotelName = '«' . Hotel::findOrFail($id)->toArray()['name'] . '»';
         if (Hotel::destroy($id)) {
             session()->flash('message', "Отель $hotelName удалён.");
-            return back();
+            return redirect()->route('h.list');
         }
     }
 }

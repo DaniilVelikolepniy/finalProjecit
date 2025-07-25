@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-layouts.app>
     <!-- component -->
     <div class="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
         <div class="flex justify-start item-start space-y-2 flex-col">
@@ -29,4 +29,4 @@
             <x-bookings.booking-card :booking="$booking"></x-bookings.booking-card>
         </div>
     </div>
-</x-app-layout>
+</x-layouts.app>
