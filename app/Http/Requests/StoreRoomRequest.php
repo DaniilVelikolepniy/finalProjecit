@@ -22,7 +22,13 @@ class StoreRoomRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:2048',
+            'price' => 'required',
+            'area' => 'required',
+            'room_class' => 'required|string|max:255',
+            'hotel_id' => 'required|integer',
+            'poster_url' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
     }
 }

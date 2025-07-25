@@ -6,6 +6,7 @@ use App\Http\Requests\StoreRoomRequest;
 use App\Models\Hotel;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class RoomController extends Controller
 {
@@ -24,7 +25,7 @@ class RoomController extends Controller
     public function create()
     {
         $hotels = Hotel::all();
-        return view('hotels.add_room_form', ['hotels' => $hotels]);
+        return view('rooms.add_room_form', ['hotels' => $hotels]);
     }
 
     /**
@@ -35,8 +36,8 @@ class RoomController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'price_per_night' => 'required|numeric|min:0',
-            'area' => 'nullable|numeric|min:0',
+            'price_per_night' => 'required|min:0',
+            'area' => 'nullable|min:0',
             'room_class' => 'nullable|string|max:50',
             'hotel_id' => 'required|exists:hotels,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
@@ -58,7 +59,7 @@ class RoomController extends Controller
             'hotel_id' => $validated['hotel_id'],
         ]);
 
-        return redirect()->route('h.list')->with('success', 'Комната успешно добавлена.');
+        return redirect()->route('h.show', ['hotel' => $request->hotel_id]);
     }
 
     /**
@@ -75,7 +76,8 @@ class RoomController extends Controller
     public function edit($id)
     {
         $roomData = Room::findOrFail($id)->toArray();
-        return view('', ['data' => $roomData]);
+        $hotels = Hotel::all();
+        return view('rooms.edit_room_form', ['data' => $roomData, 'hotels' => $hotels]);
     }
 
     /**
@@ -83,24 +85,44 @@ class RoomController extends Controller
      */
     public function update(StoreRoomRequest $request, $id)
     {
-        $path = null;
+        $room = Room::findOrFail($id);
+        $path = $room->poster_url;
 
         if ($request->hasFile('poster_url')) {
-            $path = $request->file('poster_url')->store('room_images', 'public');
+            $file = $request->file('poster_url');
+
+            if ($file->isValid() && str_starts_with($file->getMimeType(), 'image/')) {
+                if ($room->poster_url) {
+                    Storage::disk('public')->delete($room->poster_url);
+                }
+
+                $path = $file->store('room_images', 'public');
+            } else {
+                return redirect()->back()->withErrors(['poster_url' => 'Файл должен быть изображением.']);
+            }
         }
 
-        $validatedData = $request->toArray();
+        $validatedData = $request->validated();
         $validatedData['poster_url'] = $path;
-        Room::findOrFail($id)->update($validatedData);
-        dd('В контроллере комнат в метод update, на строке 67, надо вставить название роута куда перенаправляем');
-        return redirect()->route('');
+
+        $room->update($validatedData);
+
+        return redirect()->route('h.show', ['hotel' => $room->hotel_id]);
     }
+
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)
     {
+        $room = Room::findOrFail($id);
+
+        if ($room->poster_url) {
+            Storage::disk('public')->delete($room->poster_url);
+        }
         Room::destroy($id);
+        return redirect()->back()->with('success', 'Комната успешно удалена.');
     }
 }

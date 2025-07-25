@@ -1,12 +1,27 @@
 <div {{ $attributes->merge(['class' => 'flex flex-col md:flex-row shadow-md']) }}>
     <div class="h-full w-full md:w-2/5">
         <?php
-            $image = asset('storage/' . $room->poster_url);
+        $image = asset('storage/' . $room->poster_url);
         ?>
         <div class="h-64 w-full bg-cover bg-center bg-no-repeat" style="background-image: url(<?php echo $image ?>)">
         </div>
     </div>
-    <div class="p-4 w-full md:w-3/5 flex flex-col justify-between">
+    <div class="p-4 w-full md:w-3/5 flex flex-col justify-between relative">
+        <a href="{{ route('r.edit', $room->id) }}"
+            class="absolute top-0 right-0 mt-2 mr-2 bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded shadow">
+            ✎ Редактировать
+        </a>
+        <form action="{{ route('r.destroy', $room->id) }}" method="POST"
+            class="absolute top-[40px] right-0 mr-2"
+            onsubmit="return confirm('Вы уверены, что хотите удалить эту комнату?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit"
+                class="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded shadow mt-1">
+                🗑 Удалить
+            </button>
+        </form>
+
         <div class="pb-2">
             <div class="text-xl font-bold">
                 {{ $room->name }}

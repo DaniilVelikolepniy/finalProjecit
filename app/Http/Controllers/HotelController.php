@@ -6,6 +6,7 @@ use App\Models\Hotel;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreHotelRequest;
 use App\Models\Room;
+use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
 {
@@ -20,7 +21,7 @@ class HotelController extends Controller
     public function show($id)
     {
         $hotelData = Hotel::findOrFail($id);
-        $roomsData = Room::all();
+        $roomsData = Room::where('hotel_id', $id)->get();
         return view('hotels.show', ['hotel' => $hotelData, 'rooms' => $roomsData]);
     }
 
@@ -59,10 +60,21 @@ class HotelController extends Controller
     // сохранение изменений
     public function update(StoreHotelRequest $request, $id)
     {
-        $path = null;
+        $hotel = Hotel::findOrFail($id);
+        $path = $hotel->poster_url;
 
         if ($request->hasFile('poster_url')) {
-            $path = $request->file('poster_url')->store('hotel_images', 'public');
+            $file = $request->file('poster_url');
+
+            if ($file->isValid() && str_starts_with($file->getMimeType(), 'image/')) {
+                if ($hotel->poster_url) {
+                    Storage::disk('public')->delete($hotel->poster_url);
+                }
+
+                $path = $file->store('hotel_images', 'public');
+            } else {
+                return redirect()->back()->withErrors(['poster_url' => 'Файл должен быть изображением.']);
+            }
         }
 
         $validatedData = $request->toArray();
