@@ -48,7 +48,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email:unicode|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
@@ -58,6 +58,8 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
+        event(new \App\Events\UserRegistered($user));
+
         auth()->login($user);
 
         return redirect()->route('home');
@@ -65,11 +67,11 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout(); // Завершаем сессию пользователя
+        Auth::logout();
 
-        $request->session()->invalidate(); // Инвалидируем сессию
-        $request->session()->regenerateToken(); // Обновляем CSRF-токен для безопасности
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-        return redirect('/'); // Перенаправляем на главную страницу или страницу входа
+        return redirect('/');
     }
 }
