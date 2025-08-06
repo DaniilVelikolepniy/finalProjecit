@@ -88,6 +88,33 @@
 </head>
 
 <body class="font-sans antialiased">
+
+    @if ($errors->has('booking'))
+    <div
+        x-data="{ show: true }"
+        x-show="show"
+        class="fixed left-1/2 transform -translate-x-1/2 z-50"
+        style="top:2vh;">
+        <div class="relative flex items-center w-[13vw] min-w-[286px] max-w-[90vw] h-fit px-4 py-2 bg-yellow-100 rounded-[20px] shadow-[0_0_15px_0_rgba(0,0,0,0.15)] border border-yellow-300" style="height: fit-content;">
+            <button @click="show = false" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <div class="flex items-center">
+                <svg class="w-7 h-7 mr-3 flex-shrink-0" viewBox="0 0 32 32" fill="none">
+                    <rect x="2" y="4" width="28" height="24" rx="8" fill="#FACC15" stroke="#F59E42" stroke-width="2" />
+                    <polygon points="16,8 26,24 6,24" fill="#FDE68A" />
+                    <text x="16" y="22" text-anchor="middle" font-size="16" font-weight="bold" fill="black" dy="0.1em">!</text>
+                </svg>
+                <span class="text-black text-sm font-medium">
+                    {{ $errors->first('booking') }}
+                </span>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <div class="bg-gray-100 min-h-screen">
         @include('layouts.navigation')
 

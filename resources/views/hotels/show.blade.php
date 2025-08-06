@@ -10,8 +10,6 @@ $startDateFormatted = $startDate->format('Y-m-d');
 $endDateFormatted = $endDate->format('Y-m-d');
 @endphp
 
-
-
 <x-layouts.app>
     <div class="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
         <div class="flex flex-wrap mb-12">
@@ -23,13 +21,11 @@ $endDateFormatted = $endDate->format('Y-m-d');
                 <hr>
 
                 <div class="flex gap-4 my-4">
-                    <!-- Кнопка редактирования -->
                     <a href="{{ route('h.edit', ['hotel' => $hotel->id]) }}"
                         class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
                         ✏️ Редактировать
                     </a>
 
-                    <!-- Форма удаления -->
                     <form method="POST" action="{{ route('h.destroy', $hotel->id) }}"
                         onsubmit="return confirm('Вы уверены, что хотите удалить этот отель?');">
                         @csrf
