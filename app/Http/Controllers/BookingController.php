@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Models\Room;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
 {
@@ -14,7 +15,7 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $allBookings = Booking::all();
+        $allBookings = Booking::where('user_id', Auth::id())->get();
         return view('bookings.index', ['bookings' => $allBookings]);
     }
 
