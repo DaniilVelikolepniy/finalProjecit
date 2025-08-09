@@ -1,12 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admins\AdminController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BookingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\RoomController;
 use App\Models\Booking;
-use App\Http\Controllers\RoleController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -14,9 +14,9 @@ use App\Http\Controllers\RoleController;
 
 Route::get('/', function () {
     return view('index');
-})
-    ->middleware('auth')
-    ->name('home');
+})->middleware('auth')->name('home');
+
+Route::get('/users', [AdminController::class, 'usersList'])->name('usersListForAdmin');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/authUser', [AuthController::class, 'login'])->name('auth');
