@@ -17,11 +17,6 @@ Route::get('/', function () {
     return view('index');
 })->middleware('auth')->name('home');
 
-Route::get('/users', [AdminController::class, 'usersList'])->name('usersListForAdmin');
-Route::get('/user_info/{id}', [AdminController::class, 'usersData'])->name('u.info');
-Route::post('/users/assign-role', [AdminController::class, 'assignRole'])->name('u.assignRole');
-Route::post('/users/remove-role', [AdminController::class, 'removeRole'])->name('u.removeRole');
-
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/authUser', [AuthController::class, 'login'])->name('auth');
 
@@ -31,6 +26,10 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/users', [AdminController::class, 'usersList'])->name('usersListForAdmin')->middleware('role:admin');
+    Route::get('/user_info/{id}', [AdminController::class, 'usersData'])->name('u.info')->middleware('role:admin');
+    Route::post('/users/assign-role', [AdminController::class, 'assignRole'])->name('u.assignRole')->middleware('role:admin');
+    Route::post('/users/remove-role', [AdminController::class, 'removeRole'])->name('u.removeRole')->middleware('role:admin');
 
     Route::prefix('roles')
         ->name('roles.')
