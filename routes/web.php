@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\RoomController;
 use App\Models\Booking;
+use App\Http\Controllers\RoleController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -17,6 +18,9 @@ Route::get('/', function () {
 })->middleware('auth')->name('home');
 
 Route::get('/users', [AdminController::class, 'usersList'])->name('usersListForAdmin');
+Route::get('/user_info/{id}', [AdminController::class, 'usersData'])->name('u.info');
+Route::post('/users/assign-role', [AdminController::class, 'assignRole'])->name('users.assignRole');
+Route::post('/users/remove-role', [AdminController::class, 'removeRole'])->name('users.removeRole');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/authUser', [AuthController::class, 'login'])->name('auth');

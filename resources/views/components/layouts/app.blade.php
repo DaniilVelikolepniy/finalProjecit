@@ -116,6 +116,25 @@
     </div>
     @endif
 
+    @if(session('success'))
+    <div
+        x-data="{ show: true }"
+        x-show="show"
+        x-init="setTimeout(() => show = false, 4000)"
+        class="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-100 border border-green-300 text-green-800 px-4 py-2 rounded shadow-lg z-50">
+        <div class="flex items-center">
+            <span>{{ session('success') }}</span>
+            <button
+                @click="show = false"
+                class="ml-3 text-green-700 hover:text-green-900 focus:outline-none">
+                ✖
+            </button>
+        </div>
+    </div>
+    @endif
+
+
+
     <div class="bg-gray-100 min-h-screen">
         @include('layouts.navigation')
 
