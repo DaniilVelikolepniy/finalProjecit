@@ -19,8 +19,8 @@ Route::get('/', function () {
 
 Route::get('/users', [AdminController::class, 'usersList'])->name('usersListForAdmin');
 Route::get('/user_info/{id}', [AdminController::class, 'usersData'])->name('u.info');
-Route::post('/users/assign-role', [AdminController::class, 'assignRole'])->name('users.assignRole');
-Route::post('/users/remove-role', [AdminController::class, 'removeRole'])->name('users.removeRole');
+Route::post('/users/assign-role', [AdminController::class, 'assignRole'])->name('u.assignRole');
+Route::post('/users/remove-role', [AdminController::class, 'removeRole'])->name('u.removeRole');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/authUser', [AuthController::class, 'login'])->name('auth');

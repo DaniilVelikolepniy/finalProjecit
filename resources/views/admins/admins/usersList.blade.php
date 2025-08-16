@@ -10,7 +10,7 @@
                         <p class="text-gray-600">{{ $user->email }}</p>
                         <div class="flex flex-wrap gap-2 mt-2">
                             @forelse($user->roles as $role)
-                            <form method="POST" action="{{ route('users.removeRole') }}">
+                            <form method="POST" action="{{ route('u.removeRole') }}">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ $user->id }}">
                                 <input type="hidden" name="role_id" value="{{ $role->id }}">
@@ -46,7 +46,7 @@
                                 x-transition:leave-end="opacity-0 translate-y-2 scale-95"
                                 class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-50 origin-top-right">
                                 @foreach($roles as $role)
-                                <form method="POST" action="{{ route('users.assignRole') }}">
+                                <form method="POST" action="{{ route('u.assignRole') }}">
                                     @csrf
                                     <input type="hidden" name="user_id" value="{{ $user->id }}">
                                     <input type="hidden" name="role_id" value="{{ $role->id }}">
