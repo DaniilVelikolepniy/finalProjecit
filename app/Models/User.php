@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Booking;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -70,5 +71,10 @@ class User extends Authenticatable
                 $user->roles()->attach($defaultRole->id);
             }
         });
+    }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'user_id');
     }
 }

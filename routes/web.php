@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admins\AdminController;
+use App\Http\Controllers\Admins\EditorController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BookingController;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/users/remove-role', [AdminController::class, 'removeRole'])->name('u.removeRole')->middleware('role:admin');
     Route::post('/users/assign-hotel', [AdminController::class, 'assignHotel'])->name('u.assignHotel')->middleware('role:admin');
     Route::delete('/users/user-destroy/{id}', [AdminController::class, 'destroy'])->name('u.destroy')->middleware('role:admin');
+
+    Route::get('/hotel_guest', [EditorController::class, 'usersList'])->name('e.usersList')->middleware('role:admin,editor');
 
     Route::prefix('roles')
         ->name('roles.')
@@ -76,7 +79,6 @@ Route::middleware('auth')->group(function () {
             ]);
     });
 
-
     Route::resource('/rooms', RoomController::class)
         ->names([
             'index'   => 'r.index',
@@ -85,7 +87,7 @@ Route::middleware('auth')->group(function () {
             'edit'    => 'r.edit',
             'update'  => 'r.update',
             'destroy' => 'r.destroy',
-        ]);
+    ]);
 
     Route::middleware(['role:admin,editor'])->group(function () {
         Route::resource('/rooms', RoomController::class)
@@ -96,19 +98,18 @@ Route::middleware('auth')->group(function () {
                 'edit'    => 'r.edit',
                 'update'  => 'r.update',
                 'destroy' => 'r.destroy',
-            ]);
+        ]);
     });
 
-    Route::resource('/bookings', BookingController::class)
-        ->names([
-            'index'   => 'b.index',
-            'show'    => 'b.show',
-            'create'  => 'b.create',
-            'store'   => 'b.store',
-            'edit'    => 'b.edit',
-            'update'  => 'b.update',
-            'destroy' => 'b.destroy',
-        ]);
+    Route::resource('/bookings', BookingController::class)->names([
+        'index'   => 'b.index',
+        'show'    => 'b.show',
+        'create'  => 'b.create',
+        'store'   => 'b.store',
+        'edit'    => 'b.edit',
+        'update'  => 'b.update',
+        'destroy' => 'b.destroy',
+    ]);
 
     Route::resource('/bookings', BookingController::class)
         ->only(['edit', 'update'])
@@ -116,5 +117,5 @@ Route::middleware('auth')->group(function () {
         ->names([
             'edit'    => 'b.edit',
             'update'  => 'b.update',
-        ]);
+    ]);
 });

@@ -43,4 +43,3 @@ class Booking extends Model
         return $this->roles()->where('name', 'editor')->exists();
     }
 }
-
