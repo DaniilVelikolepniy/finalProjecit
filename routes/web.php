@@ -8,6 +8,7 @@ use App\Http\Controllers\HotelController;
 use App\Http\Controllers\RoomController;
 use App\Models\Booking;
 use App\Http\Controllers\RoleController;
+use App\Models\Role;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -30,6 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/user_info/{id}', [AdminController::class, 'usersData'])->name('u.info')->middleware('role:admin');
     Route::post('/users/assign-role', [AdminController::class, 'assignRole'])->name('u.assignRole')->middleware('role:admin');
     Route::post('/users/remove-role', [AdminController::class, 'removeRole'])->name('u.removeRole')->middleware('role:admin');
+    Route::post('/users/assign-hotel', [AdminController::class, 'assignHotel'])->name('u.assignHotel')->middleware('role:admin');
+    Route::delete('/users/user-destroy/{id}', [AdminController::class, 'destroy'])->name('u.destroy')->middleware('role:admin');
 
     Route::prefix('roles')
         ->name('roles.')
@@ -42,35 +45,76 @@ Route::middleware('auth')->group(function () {
             Route::put('/{role}', [RoleController::class, 'update'])->name('update');
             Route::get('/{role}/users', [RoleController::class, 'users'])->name('users');
             Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
-        });
+    });
 
     Route::resource('/hotels', HotelController::class)->names([
-        'index' => 'h.list',
-        'show' => 'h.show',
-        'create' => 'h.create',
-        'store' => 'h.store',
-        'edit' => 'h.edit',
-        'update' => 'h.update',
+        'index'   => 'h.list',
+        'show'    => 'h.show',
+        'create'  => 'h.create',
+        'store'   => 'h.store',
+        'edit'    => 'h.edit',
+        'update'  => 'h.update',
         'destroy' => 'h.destroy',
     ]);
 
-    Route::resource('/rooms', RoomController::class)->names([
-        'index' => 'r.index',
-        'show' => 'r.show',
-        'create' => 'r.create',
-        'store' => 'r.store',
-        'edit' => 'r.edit',
-        'update' => 'r.update',
-        'destroy' => 'r.destroy',
-    ]);
+    Route::middleware(['role:admin'])->group(function () {
+        Route::resource('/hotels', HotelController::class)
+            ->only(['create', 'store'])
+            ->names([
+                'create' => 'h.create',
+                'store'  => 'h.store',
+        ]);
+    });
 
-    Route::resource('/bookings', BookingController::class)->names([
-        'index' => 'b.index',
-        'show' => 'b.show',
-        'create' => 'b.create',
-        'store' => 'b.store',
-        'edit' => 'b.edit',
-        'update' => 'b.update',
-        'destroy' => 'b.destroy',
-    ]);
+    Route::middleware(['role:admin,editor'])->group(function () {
+        Route::resource('/hotels', HotelController::class)
+            ->only(['edit', 'update', 'destroy'])
+            ->names([
+                'edit'    => 'h.edit',
+                'update'  => 'h.update',
+                'destroy' => 'h.destroy',
+            ]);
+    });
+
+
+    Route::resource('/rooms', RoomController::class)
+        ->names([
+            'index'   => 'r.index',
+            'create'  => 'r.create',
+            'store'   => 'r.store',
+            'edit'    => 'r.edit',
+            'update'  => 'r.update',
+            'destroy' => 'r.destroy',
+        ]);
+
+    Route::middleware(['role:admin,editor'])->group(function () {
+        Route::resource('/rooms', RoomController::class)
+            ->only(['create', 'store', 'edit', 'update', 'destroy'])
+            ->names([
+                'create'  => 'r.create',
+                'store'   => 'r.store',
+                'edit'    => 'r.edit',
+                'update'  => 'r.update',
+                'destroy' => 'r.destroy',
+            ]);
+    });
+
+    Route::resource('/bookings', BookingController::class)
+        ->names([
+            'index'   => 'b.index',
+            'show'    => 'b.show',
+            'create'  => 'b.create',
+            'store'   => 'b.store',
+            'edit'    => 'b.edit',
+            'update'  => 'b.update',
+            'destroy' => 'b.destroy',
+        ]);
+
+    Route::resource('/bookings', BookingController::class)
+        ->only(['edit', 'update'])
+        ->middleware(['role:admin,editor'])
+        ->names([
+            'edit'    => 'b.edit',
+            'update'  => 'b.update',
+        ]);
 });

@@ -32,5 +32,15 @@ class Booking extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function isAdmin()
+    {
+        return $this->roles()->where('name', 'admin')->exists();
+    }
+
+    public function isEditor()
+    {
+        return $this->roles()->where('name', 'editor')->exists();
+    }
 }
 

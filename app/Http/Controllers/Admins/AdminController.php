@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\Hotel;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,7 +19,9 @@ class AdminController extends Controller
 
         $roles = Role::all();
 
-        return view('admins.admins.usersList', compact('users', 'roles'));
+        $hotels = Hotel::all();
+
+        return view('admins.admins.usersList', compact('users', 'roles', 'hotels'));
     }
 
     public function usersData(int $id)
@@ -58,5 +61,27 @@ class AdminController extends Controller
         $user->roles()->detach($role->id);
 
         return back()->with('success', "Роль '{$role->name}' удалена у пользователя {$user->name}");
+    }
+
+    public function assignHotel(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'hotel_id' => 'required|exists:hotels,id',
+        ]);
+
+        $hotel = Hotel::findOrFail($request->hotel_id);
+        $hotel->editor_id = $request->user_id;
+        $hotel->save();
+
+        return back()->with('success', 'Пользователь назначен редактором отеля!');
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return back()->with('success', 'Пользователь успешно удалён!');
     }
 }

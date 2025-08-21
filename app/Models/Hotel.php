@@ -30,4 +30,14 @@ class Hotel extends Model
     {
         return $this->belongsToMany(Facility::class, 'facility_hotels');
     }
+
+    public function isAdmin()
+    {
+        return $this->roles()->where('name', 'admin')->exists();
+    }
+
+    public function isEditor()
+    {
+        return $this->roles()->where('name', 'editor')->exists();
+    }
 }

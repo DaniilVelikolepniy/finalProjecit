@@ -60,4 +60,15 @@ class User extends Authenticatable
     {
         return $this->roles()->where('name', 'editor')->exists();
     }
+
+    protected static function booted()
+    {
+        static::created(function ($user) {
+            $defaultRole = Role::where('name', 'client')->first();
+
+            if ($defaultRole) {
+                $user->roles()->attach($defaultRole->id);
+            }
+        });
+    }
 }

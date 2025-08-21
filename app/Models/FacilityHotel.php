@@ -18,4 +18,14 @@ class FacilityHotel extends Model
         'facility_id',
         'hotel_id'
     ];
+
+    public function isAdmin()
+    {
+        return $this->roles()->where('name', 'admin')->exists();
+    }
+
+    public function isEditor()
+    {
+        return $this->roles()->where('name', 'editor')->exists();
+    }
 }

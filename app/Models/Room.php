@@ -38,4 +38,14 @@ class Room extends Model
     {
         return $this->hasMany(Booking::class);
     }
+
+    public function isAdmin()
+    {
+        return $this->roles()->where('name', 'admin')->exists();
+    }
+
+    public function isEditor()
+    {
+        return $this->roles()->where('name', 'editor')->exists();
+    }
 }
