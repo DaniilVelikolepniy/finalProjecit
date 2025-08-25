@@ -11,17 +11,21 @@ use App\Models\Booking;
 
 class EditorController extends Controller
 {
-    public function usersList()
+    public function usersList(Request $request)
     {
+        $perPage = (int) $request->input('perPage', 10);
+
         $id = Auth::id();
         $hotelId = Hotel::where('editor_id', $id)->value('id');
-        $users = User::query()
+
+        $users = User::with('roles')
             ->whereHas('bookings.room', function ($query) use ($hotelId) {
                 $query->where('hotel_id', $hotelId);
             })
             ->distinct()
-            ->get();
-        
+            ->paginate($perPage)
+            ->withQueryString();
+
         return view('admins.editors.usersList', compact('users'));
     }
 }
