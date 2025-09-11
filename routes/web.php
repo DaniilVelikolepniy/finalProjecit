@@ -4,6 +4,7 @@ use App\Http\Controllers\Admins\AdminController;
 use App\Http\Controllers\Admins\EditorController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\FacilityController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\RoomController;
@@ -50,6 +51,12 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
     });
 
+    Route::resource('/facilitys', FacilityController::class)->names([
+        'create' => 'f.create',
+        'store'  => 'f.store',
+    ]);
+
+    //методы list и show
     Route::resource('/hotels', HotelController::class)->names([
         'index'   => 'h.list',
         'show'    => 'h.show',

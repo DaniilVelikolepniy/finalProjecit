@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Facility;
 use Illuminate\Http\Request;
 
 class FacilityController extends Controller
@@ -19,7 +20,7 @@ class FacilityController extends Controller
      */
     public function create()
     {
-        //
+        return view('facilitys.addForm');
     }
 
     /**
@@ -27,7 +28,15 @@ class FacilityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        Facility::create([
+            'name' => $validated['name'],
+        ]);
+
+        return redirect()->route('h.list')->with('success', 'Удобство успешно создано');
     }
 
     /**

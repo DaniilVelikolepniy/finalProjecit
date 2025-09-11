@@ -53,9 +53,31 @@
       </div>
       <div>
         <label for="poster_url" class="block text-sm font-medium text-gray-700 mb-1">Изображение комнаты</label>
+        @if (!empty($data['poster_url']))
+        <div class="mb-3">
+          <img src="{{ asset('storage/' . $data['poster_url']) }}" alt="Текущее изображение комнаты"
+            class="w-48 h-auto rounded-lg shadow">
+        </div>
+        @endif
         <input type="file" name="poster_url" id="poster_url" accept="image/*"
           class="w-full h-[35px] px-[5px] py-[5px] border rounded-[5px] shadow-sm focus:ring-indigo-500 focus:border-indigo-500 leading-[18px] @error('image') border-red-500 @enderror">
       </div>
+
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Удобства</label>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+          @foreach ($facilities as $facility)
+          <label class="flex items-center space-x-2 bg-gray-50 hover:bg-gray-100 p-2 rounded-lg border">
+            <input type="checkbox" name="facilities[]" value="{{ $facility->id }}"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+              {{ (is_array(old('facilities', $roomFacilities)) && in_array($facility->id, old('facilities', $roomFacilities))) ? 'checked' : '' }}>
+            <span class="text-sm text-gray-700">{{ $facility->name }}</span>
+          </label>
+          @endforeach
+        </div>
+      </div>
+
       <div class="flex justify-between pt-4">
         <a href="{{ url()->previous() ?? route('home') }}" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-black rounded-lg">Назад</a>
         <input type="submit" value="Отправить"

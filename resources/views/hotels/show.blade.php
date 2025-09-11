@@ -20,6 +20,10 @@ $endDateFormatted = $endDate->format('Y-m-d');
                 <div class="text-2xl font-bold">{{ $hotel->name }}</div>
                 <hr>
 
+                @if(auth()->check() && (
+                auth()->user()->isAdmin() ||
+                (auth()->user()->isEditor() && $hotel->editor_id === auth()->id())
+                ))
                 <div class="flex gap-4 my-4">
                     <a href="{{ route('h.edit', ['hotel' => $hotel->id]) }}"
                         class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
@@ -36,6 +40,7 @@ $endDateFormatted = $endDate->format('Y-m-d');
                         </button>
                     </form>
                 </div>
+                @endif
 
 
                 <hr>

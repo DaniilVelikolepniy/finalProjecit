@@ -12,6 +12,7 @@
                 </div>
 
                 <!-- Navigation Links -->
+                 
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link href="{{ route('h.list') }}" active="{{ request()->routeIs('h.list') }}">
                         {{ __('Список отелей') }}
@@ -22,31 +23,53 @@
                         {{ __('Брони') }}
                     </x-nav-link>
                 </div>
+                @if(auth()->check() && auth()->user()->isAdmin())
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link href="{{ route('h.create') }}" active="{{ request()->routeIs('h.create') }}">
                         {{ __('Добавление отеля') }}
                     </x-nav-link>
                 </div>
+                @endif
+
+                @if(auth()->check() && (auth()->user()->isAdmin() || auth()->user()->isEditor()))
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link href="{{ route('r.create') }}" active="{{ request()->routeIs('r.create') }}">
                         {{ __('Добавление комнаты') }}
                     </x-nav-link>
                 </div>
+                @endif
+
+                @if(auth()->check() && auth()->user()->isAdmin())
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link href="{{ route('roles.index') }}" active="{{ request()->routeIs('roles.index') }}">
                         {{ __('Ролевая модель') }}
                     </x-nav-link>
                 </div>
+                @endif
+
+                @if(auth()->check() && auth()->user()->isAdmin())
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link href="{{ route('usersListForAdmin') }}" active="{{ request()->routeIs('usersListForAdmin') }}">
-                        {{ __('Пользователи') }}
+                        {{ __('Все пользователи') }}
                     </x-nav-link>
                 </div>
+                @endif
+
+                @if(auth()->check() && auth()->user()->isEditor())
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link href="{{ route('e.usersList') }}" active="{{ request()->routeIs('e.usersList') }}">
                         {{ __('Постояльцы отеля') }}
                     </x-nav-link>
                 </div>
+                @endif
+
+                @if(auth()->check() && auth()->user()->isAdmin())
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link href="{{ route('f.create') }}" active="{{ request()->routeIs('f.create') }}">
+                        {{ __('Создание удобств') }}
+                    </x-nav-link>
+                </div>
+                @endif
             </div>
 
             <!-- Settings Dropdown -->

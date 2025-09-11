@@ -9,13 +9,14 @@ use App\Models\Room;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Facility;
 
 class HotelController extends Controller
-{   
+{
     // показать все записи
     public function index()
     {
-        $allHotels = Hotel::all();
+        $allHotels = Hotel::with('facilities')->get();
         return view('hotels.index', ['hotels' => $allHotels]);
     }
 
@@ -39,11 +40,15 @@ class HotelController extends Controller
 
         foreach ($admins as $admin) {
             if ($idCurrentUser === $admin['id']) {
-                return view('hotels.add_hotel_form');
+                $facilities = Facility::all();
+                return view('hotels.add_hotel_form', compact('facilities'));
             }
         }
-        return redirect()->back()->with('Вы не являетесь администратором');
+
+        return redirect()->back()->with('error', 'Вы не являетесь администратором');
     }
+
+
 
     // сохранить добавленной записи
     public function store(StoreHotelRequest $request)
@@ -57,126 +62,74 @@ class HotelController extends Controller
 
         foreach ($admins as $admin) {
             if ($idCurrentUser === $admin['id']) {
-                $path = null;
 
+                $path = null;
                 if ($request->hasFile('poster_url')) {
                     $path = $request->file('poster_url')->store('hotel_images', 'public');
                 }
 
-                Hotel::create([
+                $hotel = Hotel::create([
                     'name' => $request->input('name'),
                     'description' => $request->input('description'),
                     'address' => $request->input('address'),
                     'poster_url' => $path
                 ]);
 
+                if ($request->has('facilities')) {
+                    $hotel->facilities()->sync($request->input('facilities'));
+                }
+
                 return redirect()->route('h.list')->with('success', 'Отель успешно добавлен!');
             }
         }
 
-        return back()->with('Вы не являетесь администратором');
+        return back()->with('error', 'Вы не являетесь администратором');
     }
+
+
 
     // форма изменения записи
     public function edit($id)
     {
-        $idCurrentUser = Auth::id();
-        $roleName = 'admin';
+        $hotel = Hotel::findOrFail($id);
+        $facilities = Facility::all();
+        $selectedFacilities = $hotel->facilities()->pluck('facilities.id')->toArray();
 
-        $admins = User::whereHas('roles', function ($query) use ($roleName) {
-            $query->where('name', $roleName);
-        })->get()->toArray();
+        $data = [
+            'id' => $hotel->id,
+            'name' => $hotel->name,
+            'description' => $hotel->description,
+            'address' => $hotel->address,
+            'poster_url' => $hotel->poster_url,
+            'facilities' => $selectedFacilities,
+        ];
 
-        foreach ($admins as $admin) {
-            if ($idCurrentUser === $admin['id']) {
-                $idCurrentUser = $roleName;
-            }
-        }
-
-        $editId = Hotel::findOrFail($id)->editor_id;
-
-        switch ($idCurrentUser) {
-            case 'admin':
-                $hotelData = Hotel::findOrFail($id)->toArray();
-                return view('hotels.edit_hotel_form', ['data' => $hotelData]);
-                break;
-            case $editId:
-                $hotelData = Hotel::findOrFail($id)->toArray();
-                return view('hotels.edit_hotel_form', ['data' => $hotelData]);
-                break;
-            default:
-                return back()->withErrors('У вас нет доступа к данному функционалу');
-                break;
-        }
+        return view('hotels.edit_hotel_form', compact('data', 'facilities'));
     }
+
 
     // сохранение изменений
-    public function update(StoreHotelRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $idCurrentUser = Auth::id();
-        $roleName = 'admin';
-        $admins = User::whereHas('roles', function ($query) use ($roleName) {
-            $query->where('name', $roleName);
-        })->get()->toArray();
-        foreach ($admins as $admin) {
-            if ($idCurrentUser === $admin['id']) {
-                $idCurrentUser = $roleName;
-            }
+        $hotel = Hotel::findOrFail($id);
+
+        $path = $hotel->poster_url;
+        if ($request->hasFile('poster_url')) {
+            $path = $request->file('poster_url')->store('hotel_images', 'public');
         }
 
-        $editId = Hotel::findOrFail($id)->editor_id;
+        $hotel->update([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'address' => $request->input('address'),
+            'poster_url' => $path,
+        ]);
 
-        switch ($idCurrentUser) {
-            case 'admin':
-                $hotel = Hotel::findOrFail($id);
-                $path = $hotel->poster_url;
+        $hotel->facilities()->sync($request->input('facilities', []));
 
-                if ($request->hasFile('poster_url')) {
-                    $file = $request->file('poster_url');
-
-                    if ($file->isValid() && str_starts_with($file->getMimeType(), 'image/')) {
-                        if ($hotel->poster_url) {
-                            Storage::disk('public')->delete($hotel->poster_url);
-                        }
-
-                        $path = $file->store('hotel_images', 'public');
-                    } else {
-                        return redirect()->back()->withErrors(['poster_url' => 'Файл должен быть изображением.']);
-                    }
-                }
-
-                $validatedData = $request->toArray();
-                $validatedData['poster_url'] = $path;
-                Hotel::findOrFail($id)->update($validatedData);
-                return redirect()->route('h.list');
-                break;
-            case $editId:
-                $hotel = Hotel::findOrFail($id);
-                $path = $hotel->poster_url;
-
-                if ($request->hasFile('poster_url')) {
-                    $file = $request->file('poster_url');
-
-                    if ($file->isValid() && str_starts_with($file->getMimeType(), 'image/')) {
-                        if ($hotel->poster_url) {
-                            Storage::disk('public')->delete($hotel->poster_url);
-                        }
-
-                        $path = $file->store('hotel_images', 'public');
-                    } else {
-                        return redirect()->back()->withErrors(['poster_url' => 'Файл должен быть изображением.']);
-                    }
-                }
-
-                $validatedData = $request->toArray();
-                $validatedData['poster_url'] = $path;
-                Hotel::findOrFail($id)->update($validatedData);
-                return redirect()->route('h.list');
-                break;
-            default:
-                return redirect()->back()->with('У вас нет прав для выполнения данного действия.');
-        }
+        return redirect()->route('h.list')->with('success', 'Информация об отеле обновлена!');
     }
+
 
     // удаление записи
     public function destroy($id)

@@ -7,6 +7,10 @@
         </div>
     </div>
     <div class="p-4 w-full md:w-3/5 flex flex-col justify-between relative">
+        @if(auth()->check() && (
+        auth()->user()->isAdmin() ||
+        (auth()->user()->isEditor() && $room->hotel->editor_id === auth()->id())
+        ))
         <a href="{{ route('r.edit', $room->id) }}"
             class="absolute top-0 right-0 mt-2 mr-2 bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded shadow">
             ✎ Редактировать
@@ -21,6 +25,7 @@
                 🗑 Удалить
             </button>
         </form>
+        @endif
 
         <div class="pb-2">
             <div class="text-xl font-bold">

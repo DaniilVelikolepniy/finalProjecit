@@ -18,7 +18,7 @@ class Facility extends Model
 
     public function hotels()
     {
-        return $this->belongsToMany(Hotel::class, 'facility_hotel');
+        return $this->belongsToMany(Hotel::class, 'facility_hotels', 'facility_id', 'hotel_id');
     }
 
     public function rooms()

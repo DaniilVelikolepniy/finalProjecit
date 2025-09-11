@@ -21,7 +21,6 @@
         .main {
             margin: 0;
             padding: 0 25px;
-            height: 90vh;
             width: calc(100vw - 50px);
             display: grid;
             justify-content: center;
@@ -89,7 +88,6 @@
 </head>
 
 <body class="font-sans antialiased">
-
     @if ($errors->has('booking'))
     <div
         x-data="{ show: true }"
