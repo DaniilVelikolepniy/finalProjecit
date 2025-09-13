@@ -14,10 +14,33 @@ use App\Models\Facility;
 class HotelController extends Controller
 {
     // показать все записи
-    public function index()
+    public function index(Request $request)
     {
-        $allHotels = Hotel::with('facilities')->get();
-        return view('hotels.index', ['hotels' => $allHotels]);
+        $query = Hotel::with(['facilities', 'rooms']);
+
+        if ($request->filled('min_price') || $request->filled('max_price')) {
+            $query->whereHas('rooms', function ($roomQuery) use ($request) {
+                if ($request->filled('min_price')) {
+                    $roomQuery->where('price', '>=', (float) $request->min_price);
+                }
+                if ($request->filled('max_price')) {
+                    $roomQuery->where('price', '<=', (float) $request->max_price);
+                }
+            });
+        }
+
+        if ($request->filled('facilities')) {
+            foreach ($request->input('facilities') as $facilityId) {
+                $query->whereHas('facilities', function ($facilityQuery) use ($facilityId) {
+                    $facilityQuery->where('facilities.id', $facilityId);
+                });
+            }
+        }
+
+        $hotels = $query->paginate(12)->withQueryString();
+        $facilities = Facility::all();
+
+        return view('hotels.index', compact('hotels', 'facilities'));
     }
 
     // показать конкретную запись
