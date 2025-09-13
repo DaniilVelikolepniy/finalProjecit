@@ -31,7 +31,7 @@
                 </div>
                 @endif
 
-                @if(auth()->check() && (auth()->user()->isAdmin() || auth()->user()->isEditor()))
+                @if(auth()->check() && (auth()->user()->isEditor()))
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link href="{{ route('r.create') }}" active="{{ request()->routeIs('r.create') }}">
                         {{ __('Добавление комнаты') }}
