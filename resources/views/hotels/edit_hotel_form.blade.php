@@ -42,10 +42,10 @@
                     @endif
                     <input type="file" name="poster_url" id="poster_url" accept="image/*"
                         class="w-full text-gray-600 file:mr-4 file:py-2 file:px-4 
-                   file:rounded-lg file:border-0
-                   file:text-sm file:font-semibold
-                   file:bg-blue-50 file:text-blue-600
-                   hover:file:bg-blue-100">
+                       file:rounded-lg file:border-0
+                       file:text-sm file:font-semibold
+                       file:bg-blue-50 file:text-blue-600
+                       hover:file:bg-blue-100">
                 </div>
 
                 <!-- Удобства -->
@@ -59,14 +59,13 @@
                                 name="facilities[]"
                                 value="{{ $facility->id }}"
                                 id="facility_{{ $facility->id }}"
-                                @if(in_array($facility->id, old('facilities', $selectedFacilities ?? []))) checked @endif
-                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                @if(in_array($facility->id, old('facilities', $data['facilities'] ?? []))) checked @endif
+                                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
                             <span class="text-gray-700 text-sm">{{ $facility->name }}</span>
                         </label>
                         @endforeach
                     </div>
                 </div>
-
 
                 <!-- Кнопки -->
                 <div class="flex justify-between">
