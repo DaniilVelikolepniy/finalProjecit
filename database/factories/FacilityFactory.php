@@ -20,8 +20,9 @@ class FacilityFactory extends Factory
      */
     public function definition(): array
     {
+        $faker = \Faker\Factory::create('ru_RU');
         return [
-            'name' => ucfirst($this->faker->word),
+            'name' => $faker->words(2, true),
         ];
     }
 }
