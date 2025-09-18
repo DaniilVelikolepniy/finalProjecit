@@ -19,10 +19,11 @@ class HotelFactory extends Factory
      */
     public function definition(): array
     {
+        $faker = \Faker\Factory::create('ru_RU');
         return [
-            'name' => $this->faker->company . ' Hotel',
-            'description' => $this->faker->paragraph,
-            'address' => $this->faker->address,
+            'name' => $faker->company . 'Отель',
+            'description' => $faker->paragraph,
+            'address' => $faker->address,
         ];
     }
 }
