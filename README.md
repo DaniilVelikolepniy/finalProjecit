@@ -1,9 +1,4 @@
 Laravel 12, PHP 8.2, проект заточен под Laravel Sail (Docker).
-## Клонируем репозиторий
-```git clone git@github.com:DaniilVelikolepniy/finalProjecit.git```
-
-## Переходим в проект
-```cd final-project-php-laravel```
 
 ## Устанавливаем зависимости в проекте
 ```composer install```
