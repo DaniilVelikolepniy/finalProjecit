@@ -2,6 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Facility;
+use App\Models\FacilityHotel;
+use App\Models\Hotel;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,11 +16,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        User::factory(10)->create();
+        Hotel::factory(10)->create();
+        Facility::factory(10)->create();
+        FacilityHotel::factory(5)->create();
     }
+
 }
