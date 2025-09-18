@@ -20,9 +20,10 @@ class FacilityFactory extends Factory
      */
     public function definition(): array
     {
-        $faker = \Faker\Factory::create('ru_RU');
         return [
-            'name' => $faker->words(2, true),
+            'name' => $this->faker->unique()->randomElement([
+                'Wi-Fi','Parking','Pool','Gym','Air Conditioning','Spa','Bar'
+            ]),
         ];
     }
 }
