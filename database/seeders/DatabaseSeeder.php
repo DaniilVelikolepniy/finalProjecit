@@ -7,6 +7,7 @@ use App\Models\Facility;
 use App\Models\Hotel;
 use App\Models\Role;
 use App\Models\Room;
+use App\Models\FacilityHotel;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -71,4 +72,5 @@ class DatabaseSeeder extends Seeder
             ]);
         }
     }
+
 }
