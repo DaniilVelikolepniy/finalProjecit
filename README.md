@@ -185,7 +185,7 @@ cp .env.example .env
 copy .env.example .env
 ```
 
-#### Генерируем
+#### Генерируем ключ приложения
 
 ```bash
 php artisan key:generate
