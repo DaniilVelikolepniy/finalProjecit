@@ -194,6 +194,7 @@ php artisan key:generate
 #### Создаём базу данных через PHPMyAdmin
 
 [PHPMyAdmin](http://localhost/phpmyadmin)
+
 _для БД используем название_
 
 ```laravel```
