@@ -12,7 +12,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-                 
+
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link href="{{ route('h.list') }}" active="{{ request()->routeIs('h.list') }}">
                         {{ __('Список отелей') }}
@@ -31,13 +31,13 @@
                 </div>
                 @endif
 
-                @if(auth()->check() && (auth()->user()->isEditor()))
+                {{--@if(auth()->check() && (auth()->user()->isEditor()))
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link href="{{ route('r.create') }}" active="{{ request()->routeIs('r.create') }}">
                         {{ __('Добавление комнаты') }}
                     </x-nav-link>
                 </div>
-                @endif
+                @endif--}}
 
                 @if(auth()->check() && auth()->user()->isAdmin())
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">

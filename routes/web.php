@@ -87,20 +87,23 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::resource('/rooms', RoomController::class)
+        ->only(['index', 'store', 'edit', 'update', 'destroy'])
         ->names([
             'index'   => 'r.index',
-            'create'  => 'r.create',
             'store'   => 'r.store',
             'edit'    => 'r.edit',
             'update'  => 'r.update',
             'destroy' => 'r.destroy',
-    ]);
+        ]);
+
 
     Route::middleware(['role:admin,editor'])->group(function () {
+        Route::get('/rooms/create/{hotel}', [RoomController::class, 'create'])
+            ->name('r.create')
+            ->middleware(['role:admin,editor']);
         Route::resource('/rooms', RoomController::class)
             ->only(['create', 'store', 'edit', 'update', 'destroy'])
             ->names([
-                'create'  => 'r.create',
                 'store'   => 'r.store',
                 'edit'    => 'r.edit',
                 'update'  => 'r.update',
