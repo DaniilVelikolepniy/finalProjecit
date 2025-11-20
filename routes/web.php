@@ -51,11 +51,6 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{role}', [RoleController::class, 'destroy'])->name('destroy');
     });
 
-    Route::resource('/facilitys', FacilityController::class)->names([
-        'create' => 'f.create',
-        'store'  => 'f.store',
-    ]);
-
     //методы list и show
     Route::resource('/hotels', HotelController::class)->names([
         'index'   => 'h.list',
@@ -84,7 +79,22 @@ Route::middleware('auth')->group(function () {
                 'update'  => 'h.update',
                 'destroy' => 'h.destroy',
             ]);
+
+        Route::get('/facilities', [FacilityController::class, 'index'])->name('f.list');
+        Route::get('/facilities/{id}/edit', [FacilityController::class, 'edit'])->name('f.edit');
+        Route::put('/facilities/{id}', [FacilityController::class, 'update'])->name('f.update');
+        Route::delete('/facilities/{id}', [FacilityController::class, 'destroy'])->name('f.destroy');
+
+
+        Route::resource('/facilitys', FacilityController::class)
+            ->only(['create', 'store'])
+            ->names([
+                'create' => 'f.create',
+                'store'  => 'f.store',
+            ]);
     });
+
+    Route::get('/rooms/{id}', [RoomController::class, 'show'])->name('r.show');
 
     Route::resource('/rooms', RoomController::class)
         ->only(['index', 'store', 'edit', 'update', 'destroy'])

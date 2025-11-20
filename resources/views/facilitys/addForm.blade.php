@@ -7,7 +7,7 @@
                 <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
                     Название нового удобства <span class="text-red-500">*</span>
                 </label>
-                <input type="text" name="name" id="name" required
+                <input type="text" name="name" id="name" required autofocus
                     class="w-full h-[30px] px-[5px] py-[5px] border rounded-[5px] shadow-sm focus:ring-indigo-500 focus:border-indigo-500 leading-[18px] @error('name') border-red-500 @enderror"
                     value="{{ old('name') }}">
             </div>

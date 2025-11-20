@@ -63,12 +63,20 @@
                 </div>
                 @endif
 
-                @if(auth()->check() && auth()->user()->isAdmin())
+                {{--@if(auth()->check() && auth()->user()->isAdmin())
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link href="{{ route('f.create') }}" active="{{ request()->routeIs('f.create') }}">
                         {{ __('Создание удобств') }}
                     </x-nav-link>
                 </div>
+                @endif--}}
+
+                @if(auth()->check() && auth()->user()->isAdmin())
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link href="{{ route('f.list') }}" active="{{ request()->routeIs('f.list') }}">
+                            {{ __('Удобства') }}
+                        </x-nav-link>
+                    </div>
                 @endif
             </div>
 

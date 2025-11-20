@@ -12,7 +12,8 @@ class FacilityController extends Controller
      */
     public function index()
     {
-        //
+        $facilites = Facility::all();
+        return view('facilitys.list', compact('facilites'));
     }
 
     /**
@@ -36,7 +37,7 @@ class FacilityController extends Controller
             'name' => $validated['name'],
         ]);
 
-        return redirect()->route('h.list')->with('success', 'Удобство успешно создано');
+        return redirect()->route('f.list')->with('success', 'Удобство успешно создано');
     }
 
     /**
@@ -50,24 +51,42 @@ class FacilityController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(int $id)
     {
-        //
+        $facility = Facility::findOrFail($id);
+
+        return view('facilitys.editForm', ['facility' => $facility]);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $facility = Facility::findOrFail($id);
+
+        $facility->update([
+            'name' => $validated['name'],
+        ]);
+
+        return redirect()->route('f.list')->with('success', 'Удобство успешно обновлено');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $facility = Facility::findOrFail($id);
+        $facility->delete();
+
+        return redirect()->route('f.list')->with('success', 'Удобство успешно удалено');
     }
+
 }

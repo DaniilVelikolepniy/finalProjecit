@@ -59,10 +59,8 @@ class RoomController extends Controller
 
         foreach ($editors as $editor) {
             if ($idCurrentUser === $editor['id']) {
-                // Загружаем отель и его удобства
                 $hotel = Hotel::with('facilities')->findOrFail($id);
 
-                // Проверяем, что редактор действительно привязан к этому отелю
                 if ($hotel->editor_id !== $idCurrentUser) {
                     return redirect()->back()->with('error', 'Вы не можете добавлять комнаты в этот отель');
                 }
@@ -180,6 +178,16 @@ class RoomController extends Controller
         }
     }
 
+    public function show(int $id)
+    {
+        $room = Room::with(['facilities', 'hotel'])->findOrFail($id);
+
+        return view('components.rooms.show_room', [
+            'room' => $room,
+        ]);
+    }
+
+
     /**(
      * Show the form for editing the specified resource.
      */
@@ -254,40 +262,42 @@ class RoomController extends Controller
         $hotelId = Room::where('id', $id)->value('hotel_id');
         $editorId = Hotel::where('id', $hotelId)->value('editor_id');
 
-        switch ($idCurrentUser) {
-            case $roleName:
-            case $editorId:
-                $room = Room::findOrFail($id);
-                $path = $room->poster_url;
+        if ($idCurrentUser === $roleName || $idCurrentUser === $editorId) {
 
-                if ($request->hasFile('poster_url')) {
-                    $file = $request->file('poster_url');
+            $room = Room::findOrFail($id);
+            $path = $room->poster_url;
 
-                    if ($file->isValid() && str_starts_with($file->getMimeType(), 'image/')) {
-                        if ($room->poster_url) {
-                            Storage::disk('public')->delete($room->poster_url);
-                        }
+            if ($request->hasFile('poster_url')) {
+                $file = $request->file('poster_url');
 
-                        $path = $file->store('room_images', 'public');
-                    } else {
-                        return redirect()->back()->withErrors(['poster_url' => 'Файл должен быть изображением.']);
+                if ($file->isValid() && str_starts_with($file->getMimeType(), 'image/')) {
+                    if ($room->poster_url) {
+                        Storage::disk('public')->delete($room->poster_url);
                     }
+
+                    $path = $file->store('room_images', 'public');
+                } else {
+                    return redirect()->back()->withErrors(['poster_url' => 'Файл должен быть изображением.']);
                 }
+            }
 
-                $validatedData = $request->validated();
-                $validatedData['poster_url'] = $path;
+            $validatedData = $request->validated();
 
-                $room->update($validatedData);
+            $validatedData['poster_url'] = $path;
+            $validatedData['type'] = $validatedData['room_class'] ?? $room->type;
 
-                $facilities = $request->input('facilities', []);
-                $room->facilities()->sync($facilities);
+            $room->update($validatedData);
 
-                return redirect()->route('h.show', ['hotel' => $room->hotel_id]);
+            $facilities = $request->input('facilities', []);
+            $room->facilities()->sync($facilities);
 
-            default:
-                return back()->with('success', 'У вас нет доступа к данному функционалу');
+            return redirect()->route('h.show', ['hotel' => $room->hotel_id]);
+
+        } else {
+            return back()->with('success', 'У вас нет доступа к данному функционалу');
         }
     }
+
 
     /**
      * Remove the specified resource from storage.

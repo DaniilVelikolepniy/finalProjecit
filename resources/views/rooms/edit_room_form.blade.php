@@ -33,12 +33,12 @@
         <select name="room_class" id="room_class"
           class="w-full h-[30px] px-[5px] py-[5px] border rounded-[5px] shadow-sm focus:ring-indigo-500 focus:border-indigo-500 leading-[18px] @error('room_class') border-red-500 @enderror">
           <option value="">Выберите класс</option>
-          <option value="economy" {{ old('room_class', $data['type']) === 'economy' ? 'selected' : '' }}>Эконом</option>
-          <option value="standard" {{ old('room_class', $data['type']) === 'standard' ? 'selected' : '' }}>Стандарт</option>
-          <option value="comfort" {{ old('room_class', $data['type']) === 'comfort' ? 'selected' : '' }}>Комфорт</option>
-          <option value="business" {{ old('room_class', $data['type']) === 'business' ? 'selected' : '' }}>Бизнес</option>
-          <option value="luxury" {{ old('room_class', $data['type']) === 'luxury' ? 'selected' : '' }}>Люкс</option>
-          <option value="presidential" {{ old('room_class', $data['type']) === 'presidential' ? 'selected' : '' }}>Президентский</option>
+          <option value="Эконом" {{ old('room_class', $data['type']) === 'economy' ? 'selected' : '' }}>Эконом</option>
+          <option value="Стандарт" {{ old('room_class', $data['type']) === 'standard' ? 'selected' : '' }}>Стандарт</option>
+          <option value="Комфорт" {{ old('room_class', $data['type']) === 'Комфорт' ? 'selected' : '' }}>Комфорт</option>
+          <option value="Бизнес" {{ old('room_class', $data['type']) === 'business' ? 'selected' : '' }}>Бизнес</option>
+          <option value="Люкс" {{ old('room_class', $data['type']) === 'luxury' ? 'selected' : '' }}>Люкс</option>
+          <option value="Президентский" {{ old('room_class', $data['type']) === 'presidential' ? 'selected' : '' }}>Президентский</option>
         </select>
       </div>
       <div>
