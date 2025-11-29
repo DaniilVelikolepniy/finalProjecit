@@ -18,7 +18,7 @@
         <!-- Описание -->
         <div>
           <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Описание</label>
-          <textarea name="description" id="description" rows="4"
+            <textarea name="description" id="description" rows="4"
             class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
         </div>
 
@@ -87,7 +87,7 @@
         <div>
           <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Изображение комнаты</label>
           <input type="file" name="image" id="image" accept="image/*"
-            class="w-full text-gray-600 file:mr-4 file:py-2 file:px-4 
+            class="w-full text-gray-600 file:mr-4 file:py-2 file:px-4
                    file:rounded-lg file:border-0
                    file:text-sm file:font-semibold
                    file:bg-indigo-50 file:text-indigo-600

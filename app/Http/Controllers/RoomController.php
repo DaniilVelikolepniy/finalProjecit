@@ -27,45 +27,59 @@ class RoomController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(int $id)
     {
         $idCurrentUser = Auth::id();
-        $adminRole = 'admin';
 
+        // Проверка на админа
+        $adminRole = 'admin';
         $admins = User::whereHas('roles', function ($query) use ($adminRole) {
             $query->where('name', $adminRole);
         })->get()->toArray();
 
         foreach ($admins as $admin) {
             if ($idCurrentUser === $admin['id']) {
+                // Пользователь админ — получает доступ ко всем отелям
                 $hotels = Hotel::all();
-                return view('rooms.add_room_form', ['hotels' => $hotels]);
+                $hotel = Hotel::with('facilities')->findOrFail($id);
+
+                return view('rooms.add_room_form', [
+                    'hotels'     => $hotels,
+                    'facilities' => $hotel->facilities,
+                    'hotel'      => $hotel,
+                ]);
             }
         }
 
+        // Проверка на редактора
         $editorRole = 'editor';
-
         $editors = User::whereHas('roles', function ($query) use ($editorRole) {
             $query->where('name', $editorRole);
         })->get()->toArray();
 
         foreach ($editors as $editor) {
             if ($idCurrentUser === $editor['id']) {
-                $hotels = Hotel::where('editor_id', $idCurrentUser)
-                    ->with('facilities')
-                    ->get();
-                $facilities = $hotels->isNotEmpty() ? $hotels->first()->facilities : collect();
+                $hotel = Hotel::with('facilities')->findOrFail($id);
+
+                if ($hotel->editor_id !== $idCurrentUser) {
+                    return redirect()->back()->with('error', 'Вы не можете добавлять комнаты в этот отель');
+                }
+
+                $hotels = Hotel::where('editor_id', $idCurrentUser)->get();
 
                 return view('rooms.add_room_form', [
                     'hotels'     => $hotels,
-                    'facilities' => $facilities,
+                    'facilities' => $hotel->facilities,
+                    'hotel'      => $hotel,
                 ]);
             }
         }
 
-
-        return redirect()->back()->with('Вы не являетесь редактором');
+        // Если не админ и не редактор
+        return redirect()->back()->with('error', 'Вы не являетесь редактором');
     }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -164,6 +178,16 @@ class RoomController extends Controller
         }
     }
 
+    public function show(int $id)
+    {
+        $room = Room::with(['facilities', 'hotel'])->findOrFail($id);
+
+        return view('components.rooms.show_room', [
+            'room' => $room,
+        ]);
+    }
+
+
     /**(
      * Show the form for editing the specified resource.
      */
@@ -238,40 +262,42 @@ class RoomController extends Controller
         $hotelId = Room::where('id', $id)->value('hotel_id');
         $editorId = Hotel::where('id', $hotelId)->value('editor_id');
 
-        switch ($idCurrentUser) {
-            case $roleName:
-            case $editorId:
-                $room = Room::findOrFail($id);
-                $path = $room->poster_url;
+        if ($idCurrentUser === $roleName || $idCurrentUser === $editorId) {
 
-                if ($request->hasFile('poster_url')) {
-                    $file = $request->file('poster_url');
+            $room = Room::findOrFail($id);
+            $path = $room->poster_url;
 
-                    if ($file->isValid() && str_starts_with($file->getMimeType(), 'image/')) {
-                        if ($room->poster_url) {
-                            Storage::disk('public')->delete($room->poster_url);
-                        }
+            if ($request->hasFile('poster_url')) {
+                $file = $request->file('poster_url');
 
-                        $path = $file->store('room_images', 'public');
-                    } else {
-                        return redirect()->back()->withErrors(['poster_url' => 'Файл должен быть изображением.']);
+                if ($file->isValid() && str_starts_with($file->getMimeType(), 'image/')) {
+                    if ($room->poster_url) {
+                        Storage::disk('public')->delete($room->poster_url);
                     }
+
+                    $path = $file->store('room_images', 'public');
+                } else {
+                    return redirect()->back()->withErrors(['poster_url' => 'Файл должен быть изображением.']);
                 }
+            }
 
-                $validatedData = $request->validated();
-                $validatedData['poster_url'] = $path;
+            $validatedData = $request->validated();
 
-                $room->update($validatedData);
+            $validatedData['poster_url'] = $path;
+            $validatedData['type'] = $validatedData['room_class'] ?? $room->type;
 
-                $facilities = $request->input('facilities', []);
-                $room->facilities()->sync($facilities);
+            $room->update($validatedData);
 
-                return redirect()->route('h.show', ['hotel' => $room->hotel_id]);
+            $facilities = $request->input('facilities', []);
+            $room->facilities()->sync($facilities);
 
-            default:
-                return back()->with('success', 'У вас нет доступа к данному функционалу');
+            return redirect()->route('h.show', ['hotel' => $room->hotel_id]);
+
+        } else {
+            return back()->with('success', 'У вас нет доступа к данному функционалу');
         }
     }
+
 
     /**
      * Remove the specified resource from storage.

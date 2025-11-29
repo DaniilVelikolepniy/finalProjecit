@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BookingCreated;
 use App\Models\Booking;
 use App\Models\Room;
 use Carbon\Carbon;
@@ -56,7 +57,7 @@ class BookingController extends Controller
         $pricePerNight = Room::where('id', $validated['room_id'])->value('price');
         $totalPrice = $pricePerNight * $countNight;
 
-        Booking::create([
+        $booking = Booking::create([
             'room_id'     => $validated['room_id'],
             'user_id'     => $request->user()->id,
             'started_at'  => $start,
@@ -64,6 +65,12 @@ class BookingController extends Controller
             'price'       => $totalPrice,
             'days'        => $countNight,
         ]);
+
+//        $roomName = Room::where('id', $booking->room_id)->value('name');
+//        dd($roomName);
+        $booking->room_name = Room::where('id', $booking->room_id)->value('name');
+
+        event(new BookingCreated($booking));
 
         return redirect()->route('b.index')->with('success', 'Бронирование успешно создано.');
     }

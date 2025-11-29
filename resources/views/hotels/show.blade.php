@@ -30,6 +30,11 @@ $endDateFormatted = $endDate->format('Y-m-d');
                         ✏️ Редактировать
                     </a>
 
+                    <a href="{{ route('r.create', ['hotel' => $hotel->id]) }}"
+                       class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition">
+                        ➕ Добавить комнату
+                    </a>
+
                     <form method="POST" action="{{ route('h.destroy', $hotel->id) }}"
                         onsubmit="return confirm('Вы уверены, что хотите удалить этот отель?');">
                         @csrf
