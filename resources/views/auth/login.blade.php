@@ -1,10 +1,12 @@
 <x-layouts.guest>
     <x-auth-card>
         <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+            <a href="/" class="flex items-center justify-center">
+                <x-application-logo class="w-16 h-16 fill-current text-primary-600" />
             </a>
         </x-slot>
+
+        <h2 class="text-2xl font-bold text-gray-900 text-center mb-6">Вход в аккаунт</h2>
 
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
@@ -18,41 +20,43 @@
             <!-- Email Address -->
             <div>
                 <x-label for="email" :value="__('Email')" />
-
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+                <x-input id="email" class="block mt-1.5 w-full" type="email" name="email" :value="old('email')" required autofocus />
             </div>
 
             <!-- Password -->
             <div class="mt-4">
                 <x-label for="password" :value="__('Password')" />
-
-                <x-input id="password" class="block mt-1 w-full"
+                <x-input id="password" class="block mt-1.5 w-full"
                     type="password"
                     name="password"
                     required autocomplete="current-password" />
             </div>
 
             <!-- Remember Me -->
-            <div class="block mt-4">
+            <div class="flex items-center justify-between mt-4">
                 <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
+                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50" name="remember">
                     <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
                 </label>
-                <a class="block underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('register') }}">
-                    {{ __('Register') }}
-                </a>
-            </div>
 
-            <div class="flex items-center justify-end mt-4">
                 @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
+                <a class="text-sm text-primary-600 hover:text-primary-800 font-medium transition" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
                 @endif
+            </div>
 
-                <x-button class="ml-3">
+            <div class="mt-6">
+                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition">
                     {{ __('Log in') }}
-                </x-button>
+                </button>
+            </div>
+
+            <div class="mt-6 text-center">
+                <span class="text-sm text-gray-500">Нет аккаунта?</span>
+                <a class="text-sm text-primary-600 hover:text-primary-800 font-medium ml-1 transition" href="{{ route('register') }}">
+                    {{ __('Register') }}
+                </a>
             </div>
         </form>
     </x-auth-card>

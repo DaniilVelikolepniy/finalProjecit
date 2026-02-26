@@ -285,6 +285,7 @@ class RoomController extends Controller
 
             $validatedData['poster_url'] = $path;
             $validatedData['type'] = $validatedData['room_class'] ?? $room->type;
+            $validatedData['floor_area'] = $validatedData['area'] ?? $room->floor_area;
 
             $room->update($validatedData);
 

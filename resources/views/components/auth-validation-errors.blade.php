@@ -1,12 +1,15 @@
 @props(['errors'])
 
 @if ($errors->any())
-    <div {{ $attributes }}>
-        <div class="font-medium text-red-600">
-            {{ __('Whoops! Something went wrong.') }}
+    <div {{ $attributes->merge(['class' => 'bg-red-50 border border-red-200 rounded-xl p-4']) }}>
+        <div class="flex items-center gap-2 mb-2">
+            <svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+            </svg>
+            <p class="text-sm font-medium text-red-800">Пожалуйста, исправьте ошибки:</p>
         </div>
 
-        <ul class="mt-3 list-disc list-inside text-sm text-red-600">
+        <ul class="list-disc list-inside text-sm text-red-700 space-y-1 ml-7">
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach

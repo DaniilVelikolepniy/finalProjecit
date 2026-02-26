@@ -1,18 +1,24 @@
-<div {{ $attributes->merge(['class' => 'flex flex-col justify-start items-start w-full space-y-4 md:space-y-6 xl:space-y-8']) }}>
-    <div class="flex flex-col justify-start items-start bg-gray-50 px-4 py-4 md:px-6 xl:px-8 w-full">
-        <div class="flex justify-between w-full py-2 border-b border-gray-200">
-            <div class="w-full">
-                <p class="text-lg md:text-xl font-semibold leading-6 xl:leading-5 text-gray-800">
-                    Бронирование #{{ $booking->id }}
-                </p>
-                <p class="text-base font-medium leading-6 text-gray-600">
-                    {{ $booking->created_at->format('d-m-y H:i') }}
+<div {{ $attributes->merge(['class' => 'bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden']) }}>
+    <div class="p-5 sm:p-6">
+        {{-- Заголовок --}}
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-4 border-b border-gray-100">
+            <div>
+                <h3 class="text-lg font-bold text-gray-900">Бронирование #{{ $booking->id }}</h3>
+                <p class="text-sm text-gray-500 mt-0.5">
+                    {{ $booking->created_at->format('d.m.Y в H:i') }}
                 </p>
             </div>
 
-            <div class="flex space-x-2 items-start">
+            <div class="flex gap-2">
                 @if($showLink ?? false)
-                    <x-link-button href="{{ route('b.show', ['booking' => $booking]) }}">Подробнее</x-link-button>
+                    <a href="{{ route('b.show', ['booking' => $booking]) }}"
+                       class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-primary-700 bg-primary-50 rounded-xl hover:bg-primary-100 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                        Подробнее
+                    </a>
                 @endif
 
                 <form method="POST" action="{{ route('b.destroy', $booking) }}">
@@ -20,40 +26,54 @@
                     @method('DELETE')
                     <button type="submit"
                         onclick="return confirm('Вы уверены, что хотите отменить бронирование?')"
-                        class="px-4 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded">
+                        class="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-red-700 bg-red-50 rounded-xl hover:bg-red-100 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
                         Отменить
                     </button>
                 </form>
             </div>
         </div>
 
-        <div class="mt-4 md:mt-6 flex flex-col md:flex-row justify-start items-start md:space-x-6 w-full">
-            <div class="pb-4 w-full md:w-2/5">
-                <img class="w-full block" src="{{ asset('/storage/'.$booking->room->poster_url) }}" alt="image" />
+        {{-- Контент --}}
+        <div class="mt-4 flex flex-col md:flex-row gap-5">
+            <div class="md:w-2/5">
+                <img class="w-full h-48 object-cover rounded-xl"
+                     src="{{ asset('/storage/'.$booking->room->poster_url) }}"
+                     alt="{{ $booking->room->name }}"
+                     loading="lazy">
             </div>
 
-            <div class="md:flex-row flex-col flex justify-between items-start w-full md:w-3/5 pb-8 space-y-4 md:space-y-0">
-                <div class="w-full flex flex-col justify-start items-start space-y-8">
-                    <h3 class="text-xl xl:text-2xl font-semibold leading-6 text-gray-800">
-                        {{ $booking->room->name }}
-                    </h3>
-                    <div class="flex justify-start items-start flex-col space-y-2">
-                        <p class="text-sm leading-none text-gray-800">
-                            <span>Даты: </span>
-                            {{ \Carbon\Carbon::parse($booking->started_at)->format('d.m.Y') }}
-                            по
-                            {{ \Carbon\Carbon::parse($booking->finished_at)->format('d.m.Y') }}
-                        </p>
-                        <p class="text-sm leading-none text-gray-800">
-                            <span>Кол-во ночей: </span> {{ $booking->days }}
-                        </p>
+            <div class="md:w-3/5 flex flex-col justify-between">
+                <div>
+                    <h4 class="text-xl font-bold text-gray-900">{{ $booking->room->name }}</h4>
+
+                    <div class="mt-3 space-y-2">
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <svg class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <span>
+                                {{ \Carbon\Carbon::parse($booking->started_at)->format('d.m.Y') }}
+                                —
+                                {{ \Carbon\Carbon::parse($booking->finished_at)->format('d.m.Y') }}
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <svg class="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                            </svg>
+                            <span>{{ $booking->days }} {{ $booking->days == 1 ? 'ночь' : ($booking->days < 5 ? 'ночи' : 'ночей') }}</span>
+                        </div>
                     </div>
                 </div>
 
-                <div class="flex justify-end space-x-8 items-end w-full">
-                    <p class="text-base xl:text-lg font-semibold leading-6 text-gray-800">
-                        Стоимость: {{ $booking->price }} руб
-                    </p>
+                <div class="mt-4 pt-4 border-t border-gray-100 flex justify-end">
+                    <div class="text-right">
+                        <span class="text-2xl font-bold text-gray-900">{{ number_format($booking->price, 0, ',', ' ') }} ₽</span>
+                        <span class="block text-xs text-gray-500 mt-0.5">Итого</span>
+                    </div>
                 </div>
             </div>
         </div>
