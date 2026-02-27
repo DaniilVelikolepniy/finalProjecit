@@ -14,38 +14,40 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
-            <!-- Name -->
+            <!-- Имя -->
             <div>
-                <x-label for="name" :value="__('Name')" />
-                <x-input id="name" class="block mt-1.5 w-full" type="text" name="name" :value="old('name')" required autofocus />
+                <x-label for="name" value="Имя" />
+                <x-input id="name" class="block mt-1.5 w-full" type="text" name="name" :value="old('name')" required autofocus placeholder="Введите ваше имя" />
             </div>
 
-            <!-- Email Address -->
+            <!-- Электронная почта -->
             <div class="mt-4">
-                <x-label for="email" :value="__('Email')" />
-                <x-input id="email" class="block mt-1.5 w-full" type="email" name="email" :value="old('email')" required />
+                <x-label for="email" value="Электронная почта" />
+                <x-input id="email" class="block mt-1.5 w-full" type="email" name="email" :value="old('email')" required placeholder="example@mail.ru" />
             </div>
 
-            <!-- Password -->
+            <!-- Пароль -->
             <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
+                <x-label for="password" value="Пароль" />
                 <x-input id="password" class="block mt-1.5 w-full"
                     type="password"
                     name="password"
-                    required autocomplete="new-password" />
+                    required autocomplete="new-password"
+                    placeholder="Минимум 8 символов" />
             </div>
 
-            <!-- Confirm Password -->
+            <!-- Подтверждение пароля -->
             <div class="mt-4">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
+                <x-label for="password_confirmation" value="Подтверждение пароля" />
                 <x-input id="password_confirmation" class="block mt-1.5 w-full"
                     type="password"
-                    name="password_confirmation" required />
+                    name="password_confirmation" required
+                    placeholder="Повторите пароль" />
             </div>
 
             <div class="mt-6">
                 <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition">
-                    {{ __('Register') }}
+                    Зарегистрироваться
                 </button>
             </div>
 

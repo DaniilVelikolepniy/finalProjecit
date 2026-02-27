@@ -1,44 +1,33 @@
 <x-layouts.app>
-    <div class="max-w-7xl mx-auto p-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900">Удобства</h1>
+                <p class="mt-2 text-gray-500">Управление удобствами отелей и номеров</p>
+            </div>
 
-        <!-- Верхняя панель: Назад + Создать новое -->
-        <div class="flex items-center justify-between mb-6">
-
-            <!-- Кнопка назад -->
-            <a href="{{ url()->previous() }}"
-               class="inline-flex items-center px-4 py-2 bg-gray-300 hover:bg-gray-400 text-black rounded-lg shadow transition">
-                ← Назад
-            </a>
-
-            <!-- Кнопка создания нового удобства -->
             @if(auth()->check() && auth()->user()->isAdmin())
                 <a href="{{ route('f.create') }}"
-                   class="inline-flex items-center px-5 py-2 bg-indigo-600 text-white rounded-xl shadow
-                          hover:bg-indigo-700 hover:shadow-md transition-all duration-150">
-                    + Создать новое
+                   class="inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-semibold text-white bg-primary-600 rounded-xl shadow-sm hover:bg-primary-700 transition">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    Создать новое
                 </a>
             @endif
         </div>
 
-        <!-- Сетка удобств -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             @foreach($facilites as $facility)
-                <div
-                    class="relative bg-white rounded-[15px] p-4 flex flex-col justify-between
-                           transition-all duration-150 ease-in-out
-                           hover:rounded-[10px] hover:translate-y-1"
-                    style="box-shadow: 10px 10px 10px rgba(0,0,0,0.1);"
-                    onmouseover="this.style.boxShadow='5px 5px 5px rgba(0,0,0,0.05)';"
-                    onmouseout="this.style.boxShadow='10px 10px 10px rgba(0,0,0,0.1)';"
-                >
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition duration-300">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">{{ $facility->name }}</h2>
 
-                    <!-- Название удобства -->
-                    <h2 class="text-lg font-semibold mb-4">{{ $facility->name }}</h2>
-
-                    <!-- Действия -->
-                    <div class="flex justify-between mt-auto space-x-2">
+                    <div class="flex gap-2">
                         <a href="{{ route('f.edit', $facility->id) }}"
-                           class="flex-1 bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded shadow text-center transition-colors duration-150">
+                           class="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-xs font-medium text-primary-700 bg-primary-50 rounded-xl hover:bg-primary-100 transition">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
                             Изменить
                         </a>
 
@@ -48,12 +37,14 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit"
-                                    class="w-full bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded shadow transition-colors duration-150">
+                                    class="w-full inline-flex items-center justify-center gap-1 px-3 py-2 text-xs font-medium text-red-700 bg-red-50 rounded-xl hover:bg-red-100 transition">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
                                 Удалить
                             </button>
                         </form>
                     </div>
-
                 </div>
             @endforeach
         </div>

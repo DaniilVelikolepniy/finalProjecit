@@ -1,33 +1,46 @@
 <x-layouts.app>
-    <div class="main p-6 mx-auto">
-        <form action="{{ route('f.update', $facility->id) }}"
-              method="POST"
-              class="space-y-6 bg-white p-6 rounded-2xl shadow-[0px_0px_20px_5px_rgba(0,0,0,0.25)] w-[22rem] mx-auto">
+    <div class="max-w-lg mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+        <a href="{{ route('f.list') }}"
+           class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-700 mb-6 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Назад к удобствам
+        </a>
 
-            @csrf
-            @method('PUT')
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-1">Редактировать удобство</h2>
+            <p class="text-gray-500 mb-8">Измените название удобства.</p>
 
-            <div>
-                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
-                    Редактирование удобства <span class="text-red-500">*</span>
-                </label>
+            <x-form-validation-errors />
 
-                <input type="text" name="name" id="name" required autofocus
-                       class="w-full h-[30px] px-[5px] py-[5px] border rounded-[5px] shadow-sm
-                              focus:ring-indigo-500 focus:border-indigo-500 leading-[18px]
-                              @error('name') border-red-500 @enderror"
-                       value="{{ old('name', $facility->name) }}">
-            </div>
+            <form action="{{ route('f.update', $facility->id) }}" method="POST" class="space-y-6">
+                @csrf
+                @method('PUT')
 
-            <div class="flex justify-between pt-4">
-                <a href="{{ url()->previous() ?? route('home') }}"
-                   class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-black rounded-lg">
-                    Назад
-                </a>
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1.5">
+                        Название удобства <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" name="name" id="name" required autofocus
+                        value="{{ old('name', $facility->name) }}"
+                        class="w-full border border-gray-200 rounded-xl py-3 px-4 text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition @error('name') border-red-300 @enderror">
+                </div>
 
-                <input type="submit" value="Сохранить"
-                       class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg cursor-pointer">
-            </div>
-        </form>
+                <div class="flex justify-between pt-4 border-t border-gray-100">
+                    <a href="{{ route('f.list') }}"
+                        class="inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 transition">
+                        Отмена
+                    </a>
+                    <button type="submit"
+                        class="inline-flex items-center gap-1.5 px-6 py-2.5 text-sm font-semibold text-white bg-primary-600 rounded-xl shadow-sm hover:bg-primary-700 transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Сохранить
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </x-layouts.app>
