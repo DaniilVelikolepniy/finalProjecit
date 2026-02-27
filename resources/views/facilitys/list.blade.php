@@ -19,10 +19,12 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             @foreach($facilites as $facility)
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition duration-300">
-                    <h2 class="text-lg font-semibold text-gray-900 mb-4">{{ $facility->name }}</h2>
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition duration-300 flex flex-col">
+                    <div class="flex-1 flex items-center mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">{{ $facility->name }}</h2>
+                    </div>
 
-                    <div class="flex gap-2">
+                    <div class="flex gap-2 mt-auto">
                         <a href="{{ route('f.edit', $facility->id) }}"
                            class="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 text-xs font-medium text-primary-700 bg-primary-50 rounded-xl hover:bg-primary-100 transition">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
