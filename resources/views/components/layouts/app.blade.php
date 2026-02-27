@@ -20,6 +20,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -43,6 +44,14 @@
             }
         }
     </script>
+    <script>
+        // Тёмная тема: инициализация до рендеринга
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 
     <script src="{{ mix('/js/app.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/datepicker.min.js"></script>
@@ -52,6 +61,14 @@
         * {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Плавный переход темы */
+        html.transitioning,
+        html.transitioning *,
+        html.transitioning *::before,
+        html.transitioning *::after {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease !important;
         }
 
         /* Скроллбар */
@@ -68,10 +85,157 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #64748b;
         }
+
+        /* Тёмная тема: скроллбар */
+        .dark ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        /* ===== ТЁМНАЯ ТЕМА ===== */
+
+        /* Фоны */
+        .dark .bg-white { background-color: #1e293b !important; }
+        .dark .bg-gray-50 { background-color: #0f172a !important; }
+        .dark .bg-gray-100 { background-color: #334155 !important; }
+        .dark .bg-gray-200 { background-color: #475569 !important; }
+
+        /* Тексты — светлые и читаемые */
+        .dark .text-gray-900 { color: #f8fafc !important; }
+        .dark .text-gray-800 { color: #f1f5f9 !important; }
+        .dark .text-gray-700 { color: #e2e8f0 !important; }
+        .dark .text-gray-600 { color: #cbd5e1 !important; }
+        .dark .text-gray-500 { color: #94a3b8 !important; }
+        .dark .text-gray-400 { color: #94a3b8 !important; }
+        .dark .text-grey-darkest { color: #f1f5f9 !important; }
+
+        /* Границы — видимые */
+        .dark .border-gray-200 { border-color: #475569 !important; }
+        .dark .border-gray-100 { border-color: #334155 !important; }
+        .dark .border-gray-300 { border-color: #64748b !important; }
+        .dark .border-b { border-color: #475569 !important; }
+
+        /* Тени — заметные на тёмном фоне */
+        .dark .shadow-sm { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(71, 85, 105, 0.3) !important; }
+        .dark .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(71, 85, 105, 0.3) !important; }
+        .dark .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(71, 85, 105, 0.3) !important; }
+
+        /* Формы */
+        .dark input, .dark textarea, .dark select {
+            background-color: #1e293b !important;
+            border-color: #475569 !important;
+            color: #f1f5f9 !important;
+        }
+        .dark input::placeholder, .dark textarea::placeholder {
+            color: #64748b !important;
+        }
+        .dark input:focus, .dark textarea:focus, .dark select:focus {
+            border-color: #60a5fa !important;
+            box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.3) !important;
+        }
+        .dark input[type="checkbox"] {
+            background-color: #334155 !important;
+            border-color: #64748b !important;
+        }
+
+        /* Hover-состояния */
+        .dark .hover\:bg-gray-100:hover { background-color: #334155 !important; }
+        .dark .hover\:bg-gray-50:hover { background-color: #1e293b !important; }
+        .dark .hover\:bg-gray-200:hover { background-color: #475569 !important; }
+        .dark .hover\:shadow-md:hover { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(71, 85, 105, 0.4) !important; }
+
+        /* Цветные фоны — более насыщенные для видимости */
+        .dark .bg-primary-50 { background-color: rgba(59, 130, 246, 0.15) !important; }
+        .dark .bg-primary-100 { background-color: rgba(59, 130, 246, 0.2) !important; }
+        .dark .bg-red-50 { background-color: rgba(239, 68, 68, 0.15) !important; }
+        .dark .bg-red-100 { background-color: rgba(239, 68, 68, 0.2) !important; }
+        .dark .bg-emerald-50 { background-color: rgba(16, 185, 129, 0.15) !important; }
+        .dark .bg-emerald-100 { background-color: rgba(16, 185, 129, 0.2) !important; }
+        .dark .bg-amber-50 { background-color: rgba(245, 158, 11, 0.15) !important; }
+        .dark .bg-amber-100 { background-color: rgba(245, 158, 11, 0.2) !important; }
+        .dark .bg-blue-100 { background-color: rgba(59, 130, 246, 0.2) !important; }
+        .dark .bg-purple-100 { background-color: rgba(139, 92, 246, 0.2) !important; }
+        .dark .bg-yellow-100 { background-color: rgba(245, 158, 11, 0.15) !important; }
+
+        /* Цветные тексты — ярче для тёмного фона */
+        .dark .text-primary-700 { color: #93c5fd !important; }
+        .dark .text-primary-600 { color: #60a5fa !important; }
+        .dark .text-red-700 { color: #fca5a5 !important; }
+        .dark .text-red-600 { color: #f87171 !important; }
+        .dark .text-emerald-700 { color: #6ee7b7 !important; }
+        .dark .text-emerald-600 { color: #34d399 !important; }
+        .dark .text-amber-700 { color: #fcd34d !important; }
+        .dark .text-amber-600 { color: #fbbf24 !important; }
+
+        /* Hover для цветных фонов */
+        .dark .hover\:bg-primary-100:hover { background-color: rgba(59, 130, 246, 0.25) !important; }
+        .dark .hover\:bg-red-100:hover { background-color: rgba(239, 68, 68, 0.25) !important; }
+        .dark .hover\:bg-emerald-100:hover { background-color: rgba(16, 185, 129, 0.25) !important; }
+
+        /* Навигация */
+        .dark .hover\:text-gray-900:hover { color: #f8fafc !important; }
+        .dark .hover\:text-gray-700:hover { color: #e2e8f0 !important; }
+
+        /* Dropdown */
+        .dark .ring-1 { --tw-ring-color: rgba(71, 85, 105, 0.5) !important; }
+        .dark .ring-black { --tw-ring-color: rgba(71, 85, 105, 0.5) !important; }
+        .dark .py-1.bg-white { background-color: #1e293b !important; }
+
+        /* Бейджи/теги удобств */
+        .dark .bg-gray-100.text-gray-600,
+        .dark .bg-gray-100.text-gray-700,
+        .dark .bg-gray-100.text-gray-800 {
+            background-color: #334155 !important;
+            color: #e2e8f0 !important;
+            border: 1px solid #475569 !important;
+        }
+
+        /* Бейдж цены на карточке отеля */
+        .dark .bg-white\/90 {
+            background-color: rgba(30, 41, 59, 0.95) !important;
+            border: 1px solid #475569;
+        }
+
+        /* Файловый инпут */
+        .dark .file\:bg-blue-50,
+        .dark .file\:bg-primary-50 {
+            background-color: rgba(59, 130, 246, 0.2) !important;
+        }
+
+        /* Footer */
+        .dark .hover\:text-gray-700:hover { color: #f1f5f9 !important; }
+
+        /* Градиент на странице авторизации */
+        .dark .from-gray-50 { --tw-gradient-from: #0f172a !important; }
+        .dark .to-gray-100 { --tw-gradient-to: #1e293b !important; }
+
+        /* Выпадающие меню */
+        .dark [x-show].absolute {
+            background-color: #1e293b !important;
+            border-color: #475569 !important;
+        }
+        .dark [x-show].absolute button:hover,
+        .dark [x-show].absolute a:hover {
+            background-color: #334155 !important;
+        }
+        .dark .rounded-xl.overflow-hidden .py-1,
+        .dark .rounded-md .py-1 {
+            background-color: #1e293b !important;
+        }
+        .dark .hover\:bg-gray-50:hover { background-color: #334155 !important; }
+        .dark .hover\:bg-indigo-100:hover { background-color: rgba(99, 102, 241, 0.2) !important; }
+        .dark .hover\:bg-violet-100:hover { background-color: rgba(139, 92, 246, 0.2) !important; }
+        .dark .hover\:bg-rose-100:hover { background-color: rgba(244, 63, 94, 0.2) !important; }
+        .dark .hover\:text-rose-600:hover { color: #fb7185 !important; }
     </style>
 </head>
 
-<body class="font-sans antialiased bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+<body class="font-sans antialiased bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
     {{-- Уведомление об ошибке бронирования --}}
     @if ($errors->has('booking'))
     <div
@@ -134,7 +298,7 @@
 
     {{-- Заголовок страницы --}}
     @if(isset($header))
-    <header class="bg-white border-b border-gray-200">
+    <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             {{ $header }}
         </div>
@@ -147,17 +311,17 @@
     </main>
 
     {{-- Footer --}}
-    <footer class="bg-white border-t border-gray-200 mt-auto">
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                <p class="text-sm text-gray-500">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
                     &copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}. Все права защищены.
                 </p>
                 <div class="flex items-center gap-6">
-                    <a href="{{ route('h.list') }}" class="text-sm text-gray-500 hover:text-gray-700 transition">Отели</a>
+                    <a href="{{ route('h.list') }}" class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition">Отели</a>
                     @auth
-                        <a href="{{ route('b.index') }}" class="text-sm text-gray-500 hover:text-gray-700 transition">Брони</a>
-                        <a href="{{ route('profile.show') }}" class="text-sm text-gray-500 hover:text-gray-700 transition">Профиль</a>
+                        <a href="{{ route('b.index') }}" class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition">Брони</a>
+                        <a href="{{ route('profile.show') }}" class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition">Профиль</a>
                     @endauth
                 </div>
             </div>
