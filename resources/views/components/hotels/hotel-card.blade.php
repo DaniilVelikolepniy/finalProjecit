@@ -1,7 +1,7 @@
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition duration-300 group">
     <div class="flex flex-col sm:flex-row">
-        <div class="sm:w-2/5 relative overflow-hidden">
-            <img class="w-full h-48 sm:h-full object-cover group-hover:scale-105 transition duration-500"
+        <div class="sm:w-2/5 relative overflow-hidden h-48 sm:h-auto">
+            <img class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
                  src="{{ asset('storage/' . $hotel->poster_url) }}"
                  alt="Фото отеля '{{ $hotel->name }}'"
                  loading="lazy">

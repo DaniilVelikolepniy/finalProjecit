@@ -71,30 +71,13 @@
             transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease !important;
         }
 
-        /* Скроллбар */
-        ::-webkit-scrollbar {
-            width: 8px;
+        /* Скрытие скроллбара с сохранением прокрутки */
+        html {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE/Edge */
         }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #94a3b8;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
-        }
-
-        /* Тёмная тема: скроллбар */
-        .dark ::-webkit-scrollbar-track {
-            background: #1e293b;
-        }
-        .dark ::-webkit-scrollbar-thumb {
-            background: #475569;
-        }
-        .dark ::-webkit-scrollbar-thumb:hover {
-            background: #64748b;
+        html::-webkit-scrollbar {
+            display: none; /* Chrome/Safari/Opera */
         }
 
         /* ===== ТЁМНАЯ ТЕМА ===== */
@@ -309,6 +292,32 @@
     <main class="flex-1">
         {{ $slot }}
     </main>
+
+    {{-- Кнопка «Наверх» --}}
+    <button
+        x-data="{
+            show: false,
+            init() {
+                window.addEventListener('scroll', () => {
+                    this.show = window.scrollY > 400;
+                });
+            }
+        }"
+        x-show="show"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 scale-90"
+        x-transition:enter-end="opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-90"
+        @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
+        class="fixed bottom-8 right-8 z-30 w-11 h-11 flex items-center justify-center rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 shadow-lg hover:shadow-xl text-gray-500 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition duration-200 cursor-pointer"
+        title="Наверх"
+        style="display: none;">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+        </svg>
+    </button>
 
     {{-- Footer --}}
     <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
