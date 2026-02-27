@@ -77,4 +77,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Booking::class, 'user_id');
     }
+
+    /**
+     * Получить пользователя по ID.
+     *
+     * @param int $id
+     * @return User|null
+     */
+    public static function getUserById(int $id): ?User
+    {
+        return self::find($id);
+    }
 }

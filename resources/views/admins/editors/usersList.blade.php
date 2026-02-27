@@ -1,4 +1,7 @@
 <x-layouts.app>
+    @php
+        $roleLabels = ['admin' => 'Администратор', 'editor' => 'Редактор', 'client' => 'Клиент'];
+    @endphp
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="space-y-4">
@@ -17,7 +20,7 @@
                                 <input type="hidden" name="role_id" value="{{ $role->id }}">
                                 <button type="submit"
                                     class="px-2 py-1 text-sm rounded bg-gray-200 text-gray-700 hover:bg-rose-100 hover:text-rose-600 transition">
-                                    {{ $role->name }}
+                                    {{ $roleLabels[$role->name] ?? ucfirst($role->name) }}
                                 </button>
                             </form>
                             @empty

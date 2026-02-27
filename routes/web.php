@@ -5,6 +5,7 @@ use App\Http\Controllers\Admins\EditorController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\RoomController;
@@ -29,6 +30,8 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+
     Route::get('/users', [AdminController::class, 'usersList'])->name('usersListForAdmin')->middleware('role:admin');
     Route::get('/user_info/{id}', [AdminController::class, 'usersData'])->name('u.info')->middleware('role:admin');
     Route::post('/users/assign-role', [AdminController::class, 'assignRole'])->name('u.assignRole')->middleware('role:admin');

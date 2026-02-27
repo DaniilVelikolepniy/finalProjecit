@@ -1,32 +1,55 @@
 <x-layouts.app>
-    <!-- component -->
-    <div class="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
-        <div class="flex justify-start item-start space-y-2 flex-col">
-            <h1 class="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">Отель {{ $booking->room->hotel->name }}</h1>
-        </div>
-        <div class="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
-            <div class="bg-gray-50 w-full xl:w-96 flex justify-between items-center md:items-start px-4 py-6 md:p-6 xl:p-8 flex-col">
-                <h3 class="text-xl font-semibold leading-5 text-gray-800">Клиент</h3>
-                <div class="flex flex-col md:flex-row xl:flex-col justify-start items-stretch h-full w-full md:space-x-6 lg:space-x-8 xl:space-x-0">
-                    <div class="w-full flex flex-col justify-start items-start flex-shrink-0">
-                        <div class="flex justify-center w-full md:justify-start items-center space-x-4 py-4 border-b border-gray-200">
-                            <svg width="24" height="24" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#494c4e" d="M9 0a9 9 0 0 0-9 9 8.654 8.654 0 0 0 .05.92 9 9 0 0 0 17.9 0A8.654 8.654 0 0 0 18 9a9 9 0 0 0-9-9zm5.42 13.42c-.01 0-.06.08-.07.08a6.975 6.975 0 0 1-10.7 0c-.01 0-.06-.08-.07-.08a.512.512 0 0 1-.09-.27.522.522 0 0 1 .34-.48c.74-.25 1.45-.49 1.65-.54a.16.16 0 0 1 .03-.13.49.49 0 0 1 .43-.36l1.27-.1a2.077 2.077 0 0 0-.19-.79v-.01a2.814 2.814 0 0 0-.45-.78 3.83 3.83 0 0 1-.79-2.38A3.38 3.38 0 0 1 8.88 4h.24a3.38 3.38 0 0 1 3.1 3.58 3.83 3.83 0 0 1-.79 2.38 2.814 2.814 0 0 0-.45.78v.01a2.077 2.077 0 0 0-.19.79l1.27.1a.49.49 0 0 1 .43.36.16.16 0 0 1 .03.13c.2.05.91.29 1.65.54a.49.49 0 0 1 .25.75z"></path> </g></svg>
-                            <div class="flex justify-start items-start flex-col space-y-2">
-                                <p class="text-base font-semibold leading-4 text-left text-gray-800">{{ $booking->user->name }}</p>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+        {{-- Навигация --}}
+        <a href="{{ route('b.index') }}" class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-700 mb-6 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Назад к бронированиям
+        </a>
+
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">
+            Бронирование в отеле «{{ $booking->room->hotel->name }}»
+        </h1>
+
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            {{-- Информация о клиенте --}}
+            <div class="xl:col-span-1">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-24">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Клиент</h3>
+
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium uppercase tracking-wider">Имя</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $booking->user->name }}</p>
                             </div>
                         </div>
 
-                        <div class="flex justify-center text-gray-800 md:justify-start items-center space-x-4 py-4 w-full">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M3 7L12 13L21 7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            <p class="cursor-pointer text-sm leading-5 ">{{ $booking->user->email }}</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500 font-medium uppercase tracking-wider">Email</p>
+                                <p class="text-sm font-medium text-gray-900">{{ $booking->user->email }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <x-bookings.booking-card :booking="$booking"></x-bookings.booking-card>
+
+            {{-- Детали бронирования --}}
+            <div class="xl:col-span-2">
+                <x-bookings.booking-card :booking="$booking"></x-bookings.booking-card>
+            </div>
         </div>
     </div>
 </x-layouts.app>
